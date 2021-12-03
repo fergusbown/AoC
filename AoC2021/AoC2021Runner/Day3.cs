@@ -35,26 +35,18 @@ namespace AoC2021Runner
         {
             var buckets = BucketInput(inputData);
 
-            string oxygen;
-            string co2;
-            if (buckets[0].Ones.Count > buckets[0].Zeros.Count)
-            {
-                oxygen = Filter(buckets[0].Ones, buckets, FilterOxygen);
-                co2 = Filter(buckets[0].Zeros, buckets, FilterCO2);
-            }
-            else
-            {
-                oxygen = Filter(buckets[0].Zeros, buckets, FilterOxygen);
-                co2 = Filter(buckets[0].Ones, buckets, FilterCO2);
-            }
+            string oxygen = Filter(buckets, FilterOxygen);
+            string co2 = Filter(buckets, FilterCO2);
 
             return $"{oxygen.ToIntFromBinaryString() * co2.ToIntFromBinaryString()}";
         }
 
-        private string Filter(HashSet<string> startingSet, (HashSet<string> Ones, HashSet<string> Zeros)[] buckets, Func<HashSet<string>, HashSet<string>, HashSet<string>> filter)
+        private string Filter((HashSet<string> Ones, HashSet<string> Zeros)[] buckets, Func<HashSet<string>, HashSet<string>, HashSet<string>> filter)
         {
-            var remaining = startingSet;
-            for (int i = 1; i < buckets.Length; i++)
+            var remaining = new HashSet<string>(buckets[0].Ones);
+            remaining.UnionWith(buckets[0].Zeros);
+
+            for (int i = 0; i < buckets.Length; i++)
             {
                 var remainingOnes = new HashSet<string>(remaining);
                 remainingOnes.IntersectWith(buckets[i].Ones);
