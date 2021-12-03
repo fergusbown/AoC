@@ -24,6 +24,7 @@ namespace AoC2021Runner
                 .ToArray();
         }
 
-
+        public static int ToIntFromBinaryString(this string binaryString)
+            => Convert.ToInt32(binaryString, 2);
     }
 }
