@@ -36,50 +36,35 @@ namespace AoC2021Runner
 
         private IEnumerable<Point> PointsBetween(Point start, Point end)
         {
-            if (start.X == end.X)
-            {
-                // horizonatal
-                for (int y = Math.Min(start.Y, end.Y); y <= Math.Max(start.Y, end.Y); y++)
-                {
-                    yield return new Point(start.X, y);
-                }
-            }
-            else if (start.Y == end.Y)
-            {
-                for (int x = Math.Min(start.X, end.X); x <= Math.Max(start.X, end.X); x++)
-                {
-                    yield return new Point(x, start.Y);
-                }
-            }
-            else
-            {
-                if (end.X < start.X)
-                {
-                    Point temp = start;
-                    start = end;
-                    end = temp;
-                }
+            int xInc = GetIncrementAmount(start.X, end.X);
+            int yInc = GetIncrementAmount(start.Y, end.Y);
 
-                int yinc;
 
-                if (start.Y < end.Y)
+            int x = start.X;
+            int y = start.Y;
+
+            while (x != end.X || y != end.Y)
+            {
+                yield return new Point(x, y);
+                x += xInc;
+                y += yInc;
+            }
+
+            yield return new Point(x, y);
+
+            static int GetIncrementAmount(int start, int end)
+            {
+                if (start < end)
                 {
-                    yinc = 1;
+                    return 1;
                 }
-                else if (start.Y > end.Y)
+                else if (start > end)
                 {
-                    yinc = -1;
+                    return -1;
                 }
                 else
                 {
-                    yinc = 0;
-                }
-
-                int y = start.Y;
-
-                for (int x = start.X; x <= end.X; x++, y += yinc)
-                {
-                    yield return new Point(x, y);
+                    return 0;
                 }
             }
         }
