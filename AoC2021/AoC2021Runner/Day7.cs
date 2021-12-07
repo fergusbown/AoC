@@ -12,7 +12,7 @@
             return BruteForceIt(inputData, d => ((d + 1) * d) / 2).ToString();
         }
 
-        private int BruteForceIt(string input, Func<int, int> moveToCost)
+        private int BruteForceIt(string input, Func<int, int> costToMoveDistance)
         {
             int[] positions = input.Split(',').Select(p => int.Parse(p)).ToArray();
 
@@ -24,7 +24,7 @@
 
                 foreach (var currentPosition in positions)
                 {
-                    cost += moveToCost(Math.Abs(currentPosition - testPosition));
+                    cost += costToMoveDistance(Math.Abs(currentPosition - testPosition));
                 }
 
                 if (cost < cheapestYet)
