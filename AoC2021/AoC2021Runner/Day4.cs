@@ -1,6 +1,4 @@
-﻿using System;
-using System.Text;
-using Microsoft.Toolkit.HighPerformance;
+﻿using Microsoft.Toolkit.HighPerformance;
 using Microsoft.Toolkit.HighPerformance.Enumerables;
 
 namespace AoC2021Runner
@@ -11,9 +9,9 @@ namespace AoC2021Runner
         {
             (IReadOnlyCollection<int> calls, IList<Board> boards) = GetInput(inputData);
 
-            foreach(int call in calls)
+            foreach (int call in calls)
             {
-                foreach(Board board in boards)
+                foreach (Board board in boards)
                 {
                     int score = board.Play(call);
 

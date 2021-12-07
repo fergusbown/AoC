@@ -1,5 +1,4 @@
-﻿using System.Drawing;
-using Microsoft.Toolkit.HighPerformance;
+﻿using Microsoft.Toolkit.HighPerformance;
 
 namespace AoC2021Runner
 {
