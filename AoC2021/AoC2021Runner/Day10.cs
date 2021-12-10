@@ -9,22 +9,8 @@ namespace AoC2021Runner
             return inputData
                 .StringsForDay()
                 .Select(s => GetLineState(s))
-                .Select(s =>
-                {
-                    switch (s.FirstIllegalCharacter)
-                    {
-                        case ')':
-                            return 3;
-                        case ']':
-                            return 57;
-                        case '}':
-                            return 1197;
-                        case '>':
-                            return 25137;
-                        default:
-                            return 0;
-                    }
-                })
+                .Where(s => s.State == LineState.Corrupt)
+                .Select(s => s.Score)
                 .Sum()
                 .ToString();
         }
@@ -35,14 +21,14 @@ namespace AoC2021Runner
                 .StringsForDay()
                 .Select(s => GetLineState(s))
                 .Where(s => s.State == LineState.Incomplete)
-                .Select(s => s.CorrectingScore)
+                .Select(s => s.Score)
                 .OrderBy(s => s)
                 .ToArray();
 
             return scores[scores.Length / 2].ToString();
          }
 
-        private (LineState State, char? FirstIllegalCharacter, long CorrectingScore) GetLineState(string input)
+        private (LineState State, long Score) GetLineState(string input)
         {
             Stack<char> openings = new Stack<char>();
 
@@ -52,7 +38,7 @@ namespace AoC2021Runner
                 {
                     if (openings.Count == 0 || openings.Pop() != opening)
                     {
-                        return (LineState.Corrupt, ch, 0);
+                        return (LineState.Corrupt, closingToScore[ch]);
                     }
                 }
                 else
@@ -63,7 +49,7 @@ namespace AoC2021Runner
 
             if (openings.Count == 0)
             {
-                return (LineState.Legal, null, 0);
+                return (LineState.Legal, 0);
             }
             else
             {
@@ -74,11 +60,11 @@ namespace AoC2021Runner
                     score += openingToScore[openings.Pop()];
                 }
 
-                return (LineState.Incomplete, null, score);
+                return (LineState.Incomplete, score);
             }
         }
         
-        private Dictionary<char, char> closingToOpening = new Dictionary<char, char>()
+        private Dictionary<char, char> closingToOpening = new ()
         {
             { ')', '(' },
             { ']', '[' },
@@ -86,7 +72,15 @@ namespace AoC2021Runner
             { '>', '<' },
         };
 
-        private Dictionary<char, int> openingToScore = new Dictionary<char, int>()
+        private Dictionary<char, int> closingToScore = new ()
+        {
+            { ')', 3 },
+            { ']', 57 },
+            { '}', 1197 },
+            { '>', 25137 },
+        };
+
+        private Dictionary<char, int> openingToScore = new ()
         {
             { '(', 1 },
             { '[', 2 },
