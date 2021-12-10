@@ -3,7 +3,7 @@ using Microsoft.Toolkit.HighPerformance;
 
 namespace AoC2021Runner
 {
-    internal class Day5 : IDayChallenge
+    internal class Day05 : IDayChallenge
     {
         public string Part1()
             => Solve(p => p.Start.X == p.End.X || p.Start.Y == p.End.Y);

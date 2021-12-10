@@ -1,6 +1,6 @@
 ﻿namespace AoC2021Runner
 {
-    internal class Day2 : IDayChallenge
+    internal class Day02 : IDayChallenge
     {
         public string Part1()
             => CalculatePosition(new Position());

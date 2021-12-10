@@ -3,7 +3,7 @@ using Microsoft.Toolkit.HighPerformance.Enumerables;
 
 namespace AoC2021Runner
 {
-    internal class Day4 : IDayChallenge
+    internal class Day04 : IDayChallenge
     {
         public string Part1()
         {

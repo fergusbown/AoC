@@ -1,6 +1,6 @@
 ﻿namespace AoC2021Runner
 {
-    internal class Day1 : IDayChallenge
+    internal class Day01 : IDayChallenge
     {
         public string Part1()
             => IncreasingCount(inputData.IntsForDay()).ToString();

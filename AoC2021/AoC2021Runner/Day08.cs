@@ -1,6 +1,6 @@
 ﻿namespace AoC2021Runner
 {
-    internal class Day8 : IDayChallenge
+    internal class Day08 : IDayChallenge
     {
         public string Part1()
         {
