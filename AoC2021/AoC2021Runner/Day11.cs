@@ -53,35 +53,6 @@ namespace AoC2021Runner
             return new Span2D<Octopus>(levels, size, size);
         }
 
-        private void Debug(Span2D<Octopus> octopi)
-        {
-            StringBuilder debug = new StringBuilder();
-
-            for (int row = 0; row < octopi.Height; row++)
-            {
-                for (int column = 0; column < octopi.Width; column++)
-                {
-                    var octopus = octopi[row, column];
-
-                    if (octopus.Flashed)
-                    {
-                        debug.Append('*');
-                    }
-                    else
-                    {
-                        debug.Append(octopus.Energy);
-                    }
-                }
-
-                debug.AppendLine();
-            }
-
-            debug.AppendLine();
-            debug.AppendLine();
-
-            Console.WriteLine(debug.ToString());
-        }
-
         private void Reset(Span2D<Octopus> octopi)
         {
             for (int row = 0; row < octopi.Height; row++)
