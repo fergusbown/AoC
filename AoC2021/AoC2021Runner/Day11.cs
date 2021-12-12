@@ -1,5 +1,4 @@
 ﻿using System.Drawing;
-using System.Text;
 using Microsoft.Toolkit.HighPerformance;
 
 namespace AoC2021Runner
@@ -29,8 +28,8 @@ namespace AoC2021Runner
             int steps = 0;
             Point topLeft = new Point(0, 0);
             Point bottomRight = new Point(octopi.Width - 1, octopi.Height - 1);
-            
-            while(true)
+
+            while (true)
             {
                 steps++;
                 Reset(octopi);

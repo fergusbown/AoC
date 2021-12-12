@@ -1,6 +1,4 @@
-﻿using Microsoft.Toolkit.HighPerformance;
-
-namespace AoC2021Runner
+﻿namespace AoC2021Runner
 {
     internal class Day10 : IDayChallenge
     {
@@ -26,7 +24,7 @@ namespace AoC2021Runner
                 .ToArray();
 
             return scores[scores.Length / 2].ToString();
-         }
+        }
 
         private (LineState State, long Score) GetLineState(string input)
         {
@@ -63,8 +61,8 @@ namespace AoC2021Runner
                 return (LineState.Incomplete, score);
             }
         }
-        
-        private Dictionary<char, char> closingToOpening = new ()
+
+        private Dictionary<char, char> closingToOpening = new()
         {
             { ')', '(' },
             { ']', '[' },
@@ -72,7 +70,7 @@ namespace AoC2021Runner
             { '>', '<' },
         };
 
-        private Dictionary<char, int> closingToScore = new ()
+        private Dictionary<char, int> closingToScore = new()
         {
             { ')', 3 },
             { ']', 57 },
@@ -80,7 +78,7 @@ namespace AoC2021Runner
             { '>', 25137 },
         };
 
-        private Dictionary<char, int> openingToScore = new ()
+        private Dictionary<char, int> openingToScore = new()
         {
             { '(', 1 },
             { '[', 2 },
