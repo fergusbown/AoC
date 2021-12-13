@@ -109,64 +109,26 @@ namespace AoC2021Runner
 
         private Span2D<bool> Fold(Span2D<bool> paper, string axis, int position)
         {
-            Span2D<bool> larger;
-            Span2D<bool> smaller;
+            Span2D<bool> stationary;
+            Span2D<bool> folded;
 
             if (axis == "x") //folding along the vertical
             {
-                Span2D<bool> stationary = paper.Slice(0, 0, paper.Height, position);
-                Span2D<bool> folding = paper.Slice(0, position + 1, paper.Height, paper.Width - position - 1);
+                stationary = paper.Slice(0, 0, paper.Height, position);
+                folded = paper.Slice(0, position + 1, paper.Height, paper.Width - position - 1);
 
-                int swappingColumn = folding.Width - 1;
-                Span<bool> temp = new Span<bool>(new bool[folding.Height]);
-                for (int foldingColumn = 0; foldingColumn < folding.Width / 2; foldingColumn++, swappingColumn--)
-                {
-                    var swapping1 = folding.GetColumn(swappingColumn);
-                    var swapping2 = folding.GetColumn(foldingColumn);
-
-                    swapping1.CopyTo(temp);
-                    swapping2.CopyTo(swapping1);
-                    temp.CopyTo(swapping2);
-                }
-
-                if (stationary.Width > folding.Width)
-                {
-                    larger = stationary;
-                    smaller = folding;
-                }
-                else
-                {
-                    larger = folding;
-                    smaller = stationary;
-                }
+                folded.FlipHorizontally();
             }
             else //folding along the horizontal
             {
-                Span2D<bool> stationary = paper.Slice(0, 0, position, paper.Width);
-                Span2D<bool> folding = paper.Slice(position + 1, 0, paper.Height - position - 1, paper.Width);
+                stationary = paper.Slice(0, 0, position, paper.Width);
+                folded = paper.Slice(position + 1, 0, paper.Height - position - 1, paper.Width);
 
-                int swappingRow = folding.Height - 1;
-                Span<bool> temp = new Span<bool>(new bool[folding.Width]);
-                for (int foldingRow = 0; foldingRow < folding.Height / 2; foldingRow++, swappingRow--)
-                {
-                    var swapping1 = folding.GetRowSpan(swappingRow);
-                    var swapping2 = folding.GetRowSpan(foldingRow);
-                    swapping1.CopyTo(temp);
-                    swapping2.CopyTo(swapping1);
-                    temp.CopyTo(swapping2);
-                }
-
-                if (stationary.Height > folding.Height)
-                {
-                    larger = stationary;
-                    smaller = folding;
-                }
-                else
-                {
-                    larger = folding;
-                    smaller = stationary;
-                }
+                folded.FlipVertically();
             }
+
+            Span2D<bool> larger = stationary.Length > folded.Length ? stationary : folded;
+            Span2D<bool> smaller = stationary.Length > folded.Length ? folded : stationary;
 
             //copy the smaller to the bottom right of the larger
             Span2D<bool> overlap = larger.Slice(larger.Height - smaller.Height, larger.Width - smaller.Width, smaller.Height, smaller.Width);
