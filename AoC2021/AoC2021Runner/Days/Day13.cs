@@ -15,7 +15,7 @@ namespace AoC2021Runner
 
         public string Part1()
         {
-            var paper = new Span2D<bool>(inputPaper);
+            var paper = GetPaper();
 
             (char axis, int position) = folds.First();
             paper = Fold(paper, axis, position);
@@ -25,7 +25,7 @@ namespace AoC2021Runner
 
         public string Part2()
         {
-            var paper = new Span2D<bool>(inputPaper);
+            var paper = GetPaper();
 
             foreach ((char axis, int position) in folds)
             {
@@ -34,6 +34,9 @@ namespace AoC2021Runner
 
             return Draw(paper);
         }
+
+        private Span2D<bool> GetPaper()
+            => new Span2D<bool>((bool[,])inputPaper.Clone());
 
         private static Span2D<bool> GetPaper(string input, out IReadOnlyCollection<(char Axis, int Position)> folds)
         {
