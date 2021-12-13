@@ -74,63 +74,57 @@
 
             public int GetPaths(Func<Cave, Path, bool> canRevisit)
             {
-                HashSet<string> seenPaths = new();
-                List<string> validPaths = new();
+                int validPaths = 0;
                 Stack<Path> pendingPaths = new();
 
                 pendingPaths.Push(new Path(this.StartCave));
 
                 while (pendingPaths.TryPop(out Path? currentPath))
                 {
-                    if (seenPaths.Add(currentPath.Name))
+                    foreach (var newPath in currentPath.Travel(canRevisit))
                     {
-                        foreach (var path in currentPath.Travel(canRevisit))
+                        if (newPath.Terminus == EndCave)
                         {
-                            if (path.Terminus == EndCave)
-                            {
-                                validPaths.Add(path.Name);
-                            }
-                            else
-                            {
-                                pendingPaths.Push(path);
-                            }
+                            validPaths++;
+                        }
+                        else
+                        {
+                            pendingPaths.Push(newPath);
                         }
                     }
                 }
 
-                return validPaths.Count;
+                return validPaths;
             }
         }
 
         private class Path
         {
-            public string Name { get; }
-
-            public Cave Terminus => route.Last();
+            public Cave Terminus { get; }
 
             public bool IncludesSmallCaveRevisit { get; }
 
-            private readonly IReadOnlyCollection<Cave> route;
+            private readonly IReadOnlyList<Cave> route;
 
             public Path(Cave cave)
             {
-                this.Name = cave.Name;
                 this.route = new Cave[] { cave };
                 this.IncludesSmallCaveRevisit = false;
+                this.Terminus = cave;
             }
 
             public Path(Path prior, Cave next, bool isSmallCaveRevisit)
             {
-                this.Name = string.Join(',', prior.Name, next.Name);
-                var newRoute = prior.route.ToList();
+                var newRoute = new List<Cave>(prior.route);
                 newRoute.Add(next);
                 this.route = newRoute;
                 this.IncludesSmallCaveRevisit = prior.IncludesSmallCaveRevisit || isSmallCaveRevisit;
+                this.Terminus = next;
             }
 
             public IEnumerable<Path> Travel(Func<Cave, Path, bool> canRevisitSmallCave)
             {
-                foreach (var linkedCave in route.Last().LinkedCaves)
+                foreach (var linkedCave in Terminus.LinkedCaves)
                 {
                     if (linkedCave.IsLargeCave || !route.Contains(linkedCave))
                     {
@@ -146,7 +140,7 @@
 
         private class Cave
         {
-            private readonly HashSet<Cave> linkedCaves = new();
+            private readonly List<Cave> linkedCaves = new();
 
             public Cave(string name)
             {
