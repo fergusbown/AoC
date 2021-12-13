@@ -4,7 +4,7 @@
     {
         public static string InputForDay(Type implementation)
         {
-            string resourceName = implementation.Assembly.GetManifestResourceNames().Single(n => n.Contains(implementation.Name));
+            string resourceName = implementation.Assembly.GetManifestResourceNames().Single(n => n.EndsWith($"{implementation.Name}.txt"));
             using Stream stream = implementation.Assembly.GetManifestResourceStream(resourceName)!;
             using StreamReader reader = new(stream);
             return reader.ReadToEnd();
