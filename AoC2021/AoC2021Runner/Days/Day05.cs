@@ -5,11 +5,11 @@ namespace AoC2021Runner
 {
     internal class Day05 : IDayChallenge
     {
-        private readonly string inputData;
+        private readonly IReadOnlyCollection<(Point Start, Point End)> input;
 
         public Day05(string inputData)
         {
-            this.inputData = inputData;
+            this.input = GetInput(inputData);
         }
 
         public string Part1()
@@ -20,7 +20,7 @@ namespace AoC2021Runner
 
         public string Solve(Func<(Point Start, Point End), bool> filter)
         {
-            var result = GetInput(inputData)
+            var result = input
                 .Where(p => filter(p))
                 .SelectMany(x => PointsBetween(x.Start, x.End))
                 .GroupBy(p => p)

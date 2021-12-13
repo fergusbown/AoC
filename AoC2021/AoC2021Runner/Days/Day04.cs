@@ -5,17 +5,18 @@ namespace AoC2021Runner
 {
     internal class Day04 : IDayChallenge
     {
-        private readonly string inputData;
+        private readonly IReadOnlyCollection<int> calls;
+        private readonly IReadOnlyList<Board> boards;
 
         public Day04(string inputData)
         {
-            this.inputData = inputData;
+            var (calls, boards) = GetInput(inputData);
+            this.calls = calls;
+            this.boards = boards;
         }
 
         public string Part1()
         {
-            (IReadOnlyCollection<int> calls, IList<Board> boards) = GetInput(inputData);
-
             foreach (int call in calls)
             {
                 foreach (Board board in boards)
@@ -29,39 +30,38 @@ namespace AoC2021Runner
                 }
             }
 
-            return "Shit";
+            throw new InvalidOperationException("Someone should have won");
         }
 
         public string Part2()
         {
-            (IReadOnlyCollection<int> calls, IList<Board> boards) = GetInput(inputData);
-
+            var resetBoards = ResetPlay();
             foreach (int call in calls)
             {
-                for (int i = boards.Count - 1; i >= 0; i--)
+                for (int i = resetBoards.Count - 1; i >= 0; i--)
                 {
-                    var board = boards[i];
+                    var board = resetBoards[i];
                     int score = board.Play(call);
 
                     if (score > 0)
                     {
-                        if (boards.Count == 1)
+                        if (resetBoards.Count == 1)
                         {
                             return score.ToString();
                         }
                         else
                         {
-                            boards.RemoveAt(i);
+                            resetBoards.RemoveAt(i);
                         }
                     }
 
                 }
             }
 
-            return "Shit";
+            throw new InvalidOperationException("Someone should have won");
         }
 
-        private static (IReadOnlyCollection<int> Calls, IList<Board> Boards) GetInput(string data)
+        private static (IReadOnlyCollection<int> Calls, IReadOnlyList<Board> Boards) GetInput(string data)
         {
             var inputPieces = data.Split($"{Environment.NewLine}{Environment.NewLine}");
             var calls = inputPieces[0].Split(',').Select(x => int.Parse(x)).ToArray();
@@ -75,6 +75,16 @@ namespace AoC2021Runner
             return (calls, boards);
         }
 
+        private IList<Board> ResetPlay()
+        {
+            foreach (var board in boards)
+            {
+                board.Reset();
+            }
+
+            return new List<Board>(boards);
+        }
+
         private class Board
         {
             private readonly int[] boardValues;
@@ -86,6 +96,14 @@ namespace AoC2021Runner
                 this.boardValues = boardText.Split(new String[] { " ", Environment.NewLine }, StringSplitOptions.RemoveEmptyEntries)
                     .Select(v => int.Parse(v)).ToArray();
                 this.calledValues = Enumerable.Repeat(false, this.boardValues.Length).ToArray();
+            }
+
+            public void Reset()
+            {
+                for (int i = 0; i < this.calledValues.Length; i++)
+                {
+                    this.calledValues[i] = false;
+                }
             }
 
             public int Play(int call)

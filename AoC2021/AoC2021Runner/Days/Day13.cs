@@ -5,16 +5,17 @@ namespace AoC2021Runner
 {
     internal class Day13 : IDayChallenge
     {
-        private readonly string inputData;
+        private readonly bool[,] inputPaper;
+        private readonly IReadOnlyCollection<(char Axis, int Position)> folds;
 
         public Day13(string inputData)
         {
-            this.inputData = inputData;
+            this.inputPaper = GetPaper(inputData, out folds).ToArray();
         }
 
         public string Part1()
         {
-            var paper = GetPaper(inputData, out var folds);
+            var paper = new Span2D<bool>(inputPaper);
 
             (char axis, int position) = folds.First();
             paper = Fold(paper, axis, position);
@@ -24,7 +25,7 @@ namespace AoC2021Runner
 
         public string Part2()
         {
-            var paper = GetPaper(inputData, out var folds);
+            var paper = new Span2D<bool>(inputPaper);
 
             foreach ((char axis, int position) in folds)
             {

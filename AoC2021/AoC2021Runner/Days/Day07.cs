@@ -2,27 +2,25 @@
 {
     internal class Day07 : IDayChallenge
     {
-        private readonly string inputData;
+        private readonly int[] positions;
 
         public Day07(string inputData)
         {
-            this.inputData = inputData;
+            this.positions = inputData.Split(',').Select(p => int.Parse(p)).ToArray();
         }
 
         public string Part1()
         {
-            return BruteForceIt(inputData, d => d).ToString();
+            return BruteForceIt(positions, d => d).ToString();
         }
 
         public string Part2()
         {
-            return BruteForceIt(inputData, d => ((d + 1) * d) / 2).ToString();
+            return BruteForceIt(positions, d => ((d + 1) * d) / 2).ToString();
         }
 
-        private static int BruteForceIt(string input, Func<int, int> costToMoveDistance)
+        private static int BruteForceIt(int[] positions, Func<int, int> costToMoveDistance)
         {
-            int[] positions = input.Split(',').Select(p => int.Parse(p)).ToArray();
-
             int cheapestYet = int.MaxValue;
 
             for (int testPosition = positions.Min(); testPosition < positions.Max(); testPosition++)

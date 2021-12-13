@@ -2,18 +2,18 @@
 {
     internal class Day01 : IDayChallenge
     {
-        private readonly string inputData;
+        private readonly int[] inputData;
 
         public Day01(string inputData)
         {
-            this.inputData = inputData;
+            this.inputData = inputData.IntsForDay();
         }
 
         public string Part1()
-            => IncreasingCount(inputData.IntsForDay()).ToString();
+            => IncreasingCount(inputData).ToString();
 
         public string Part2()
-            => IncreasingCount(GetWindowSums(inputData.IntsForDay(), 3)).ToString();
+            => IncreasingCount(GetWindowSums(inputData, 3)).ToString();
 
         private static int[] GetWindowSums(int[] input, int windowSize)
         {

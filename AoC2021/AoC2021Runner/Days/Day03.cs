@@ -4,17 +4,15 @@ namespace AoC2021Runner
 {
     internal class Day03 : IDayChallenge
     {
-        private readonly string inputData;
+        private readonly (HashSet<string> Ones, HashSet<string> Zeros)[] buckets;
 
         public Day03(string inputData)
         {
-            this.inputData = inputData;
+            this.buckets = BucketInput(inputData);
         }
 
         public string Part1()
         {
-            var buckets = BucketInput(inputData);
-
             StringBuilder gammaBuilder = new();
             StringBuilder epsilonBuilder = new();
 
@@ -40,8 +38,6 @@ namespace AoC2021Runner
 
         public string Part2()
         {
-            var buckets = BucketInput(inputData);
-
             string oxygen = Filter(buckets, FilterOxygen);
             string co2 = Filter(buckets, FilterCO2);
 

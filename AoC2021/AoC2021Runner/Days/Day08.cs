@@ -2,17 +2,15 @@
 {
     internal class Day08 : IDayChallenge
     {
-        private readonly string inputData;
+        private readonly IReadOnlyCollection<(string[] Input, string[] Output)> notes;
 
         public Day08(string inputData)
         {
-            this.inputData = inputData;
+            this.notes = GetInput(inputData);
         }
 
         public string Part1()
         {
-            var notes = GetInput(inputData);
-
             return notes
                 .SelectMany(n => n.Output)
                 .Where(n => n.Length == 2 || n.Length == 4 || n.Length == 3 || n.Length == 7)
@@ -22,7 +20,6 @@
 
         public string Part2()
         {
-            var notes = GetInput(inputData);
             return notes.Select(n => Decode(n.Input, n.Output)).Sum().ToString();
         }
 

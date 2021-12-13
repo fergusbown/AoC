@@ -4,16 +4,16 @@ namespace AoC2021Runner
 {
     internal class Day09 : IDayChallenge
     {
-        private readonly string inputData;
+        private readonly int[,] inputArray;
 
         public Day09(string inputData)
         {
-            this.inputData = inputData;
+            this.inputArray = GetInputData(inputData).ToArray();
         }
 
         public string Part1()
         {
-            Span2D<int> input = GetInputData(inputData);
+            Span2D<int> input = new(inputArray);
 
             int sumOfRisk = 0;
             for (int rowIndex = 0; rowIndex < input.Height; rowIndex++)
@@ -29,7 +29,7 @@ namespace AoC2021Runner
 
         public string Part2()
         {
-            Span2D<int> input = GetInputData(inputData);
+            Span2D<int> input = new(inputArray);
 
             List<HashSet<(int Row, int Column)>> basins = new();
             Stack<(int Row, int Column)> pending = new();

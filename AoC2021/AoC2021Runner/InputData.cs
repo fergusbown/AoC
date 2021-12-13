@@ -1,4 +1,6 @@
-﻿namespace AoC2021Runner
+﻿using System.Diagnostics;
+
+namespace AoC2021Runner
 {
     internal static class InputData
     {
@@ -28,5 +30,12 @@
 
         public static int ToIntFromBinaryString(this string binaryString)
             => Convert.ToInt32(binaryString, 2);
+
+        public static string ElapsedString(this Stopwatch sw)
+        {
+            string result = $" ({sw.ElapsedMilliseconds}ms)";
+            sw.Restart();
+            return result;
+        }
     }
 }

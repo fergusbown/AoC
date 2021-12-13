@@ -5,16 +5,19 @@ namespace AoC2021Runner
 {
     internal class Day11 : IDayChallenge
     {
-        private readonly string inputData;
+        private readonly int[] initialLevels;
 
         public Day11(string inputData)
         {
-            this.inputData = inputData;
+            this.initialLevels = inputData
+                .Replace(Environment.NewLine, string.Empty)
+                .Select(i => i - '0')
+                .ToArray();
         }
 
         public string Part1()
         {
-            var octopi = GetInput(inputData);
+            var octopi = GetInput(initialLevels);
 
             int flashes = 0;
             Point topLeft = new(0, 0);
@@ -30,7 +33,7 @@ namespace AoC2021Runner
 
         public string Part2()
         {
-            var octopi = GetInput(inputData);
+            var octopi = GetInput(initialLevels);
 
             int steps = 1;
             Point topLeft = new(0, 0);
@@ -45,16 +48,15 @@ namespace AoC2021Runner
             return steps.ToString();
         }
 
-        private static Span2D<Octopus> GetInput(string input)
+        private static Span2D<Octopus> GetInput(int[] input)
         {
-            var levels = input
-                .Replace(Environment.NewLine, string.Empty)
-                .Select(i => new Octopus(i - '0'))
+            var octopi = input
+                .Select(i => new Octopus(i))
                 .ToArray();
 
-            int size = (int)Math.Sqrt(levels.Length);
+            int size = (int)Math.Sqrt(octopi.Length);
 
-            return new Span2D<Octopus>(levels, size, size);
+            return new Span2D<Octopus>(octopi, size, size);
         }
 
         private static void Reset(Span2D<Octopus> octopi)

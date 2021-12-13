@@ -2,11 +2,11 @@
 {
     internal class Day02 : IDayChallenge
     {
-        private readonly string inputData;
+        private readonly (Instruction, int)[] instructions;
 
         public Day02(string inputData)
         {
-            this.inputData = inputData;
+            this.instructions = inputData.InstructionsForDay<Instruction>();
         }
 
         public string Part1()
@@ -17,8 +17,6 @@
 
         private string CalculatePosition(IPosition position)
         {
-            (Instruction, int)[] instructions = inputData.InstructionsForDay<Instruction>();
-
             foreach ((Instruction instruction, int amount) in instructions)
             {
                 position.Apply(instruction, amount);

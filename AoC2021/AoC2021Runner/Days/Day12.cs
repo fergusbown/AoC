@@ -2,22 +2,20 @@
 {
     internal class Day12 : IDayChallenge
     {
-        private readonly string inputData;
+        private readonly Caves caves;
 
         public Day12(string inputData)
         {
-            this.inputData = inputData;
+            this.caves = new Caves(inputData);
         }
 
         public string Part1()
         {
-            var caves = new Caves(inputData);
             return caves.GetPaths((c, p) => false).ToString();
         }
 
         public string Part2()
         {
-            var caves = new Caves(inputData);
             return caves.GetPaths(CanRevisitSmallCave).ToString();
 
             bool CanRevisitSmallCave(Cave c, Path p)
@@ -77,7 +75,7 @@
             public int GetPaths(Func<Cave, Path, bool> canRevisit)
             {
                 HashSet<string> seenPaths = new();
-                HashSet<string> validPaths = new();
+                List<string> validPaths = new();
                 Stack<Path> pendingPaths = new();
 
                 pendingPaths.Push(new Path(this.StartCave));

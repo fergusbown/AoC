@@ -2,17 +2,16 @@
 {
     internal class Day10 : IDayChallenge
     {
-        private readonly string inputData;
+        private readonly string[] inputData;
 
         public Day10(string inputData)
         {
-            this.inputData = inputData;
+            this.inputData = inputData.StringsForDay();
         }
 
         public string Part1()
         {
             return inputData
-                .StringsForDay()
                 .Select(s => GetLineState(s))
                 .Where(s => s.State == LineState.Corrupt)
                 .Select(s => s.Score)
@@ -23,7 +22,6 @@
         public string Part2()
         {
             long[] scores = inputData
-                .StringsForDay()
                 .Select(s => GetLineState(s))
                 .Where(s => s.State == LineState.Incomplete)
                 .Select(s => s.Score)

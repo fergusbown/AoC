@@ -4,21 +4,21 @@ namespace AoC2021Runner
 {
     internal class Day06 : IDayChallenge
     {
-        private readonly string inputData;
+        private readonly IReadOnlyCollection<int> initialState;
 
         public Day06(string inputData)
         {
-            this.inputData = inputData;
+            this.initialState = inputData.Split(',').Select(v => int.Parse(v)).ToArray();
         }
 
         public string Part1()
         {
-            return LanternFish.SimulateDay(inputData, 80).ToString();
+            return LanternFish.SimulateDay(initialState, 80).ToString();
         }
 
         public string Part2()
         {
-            return LanternFish.SimulateDay(inputData, 256).ToString();
+            return LanternFish.SimulateDay(initialState, 256).ToString();
         }
 
         private class LanternFish
@@ -57,10 +57,9 @@ namespace AoC2021Runner
                 return this.countInState.Sum();
             }
 
-            public static long SimulateDay(string input, int days)
+            public static long SimulateDay(IReadOnlyCollection<int> input, int days)
             {
-                var fish = new LanternFish(input.Split(',').Select(v => int.Parse(v)).ToArray());
-
+                var fish = new LanternFish(input);
                 return fish.MoveForward(days);
             }
         }
