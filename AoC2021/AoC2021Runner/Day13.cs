@@ -9,7 +9,7 @@ namespace AoC2021Runner
         {
             var paper = GetPaper(inputData, out var folds);
 
-            (string axis, int position) = folds.First();
+            (char axis, int position) = folds.First();
             paper = Fold(paper, axis, position);
 
             return DotCount(paper).ToString();
@@ -19,7 +19,7 @@ namespace AoC2021Runner
         {
             var paper = GetPaper(inputData, out var folds);
 
-            foreach ((string axis, int position) in folds)
+            foreach ((char axis, int position) in folds)
             {
                 paper = Fold(paper, axis, position);
             }
@@ -27,7 +27,7 @@ namespace AoC2021Runner
             return Draw(paper);
         }
 
-        private Span2D<bool> GetPaper(string input, out IReadOnlyCollection<(string Axis, int Position)> folds)
+        private Span2D<bool> GetPaper(string input, out IReadOnlyCollection<(char Axis, int Position)> folds)
         {
             var paperAndFolds = input.Split($"{Environment.NewLine}{Environment.NewLine}");
             folds = paperAndFolds[1]
@@ -36,7 +36,7 @@ namespace AoC2021Runner
                 .Select(f =>
                 {
                     var instruction = f.Split('=');
-                    return (instruction[0], int.Parse(instruction[1]));
+                    return (instruction[0][0], int.Parse(instruction[1]));
                 })
                 .ToArray();
 
@@ -107,12 +107,12 @@ namespace AoC2021Runner
             return debug.ToString();
         }
 
-        private Span2D<bool> Fold(Span2D<bool> paper, string axis, int position)
+        private Span2D<bool> Fold(Span2D<bool> paper, char axis, int position)
         {
             Span2D<bool> stationary;
             Span2D<bool> folded;
 
-            if (axis == "x") //folding along the vertical
+            if (axis == 'x') //folding along the vertical
             {
                 stationary = paper.Slice(0, 0, paper.Height, position);
                 folded = paper.Slice(0, position + 1, paper.Height, paper.Width - position - 1);
