@@ -70,19 +70,14 @@ namespace AoC2021Runner
                 {
                     var octopus = octopi[row, column];
 
-                    if (!octopus.Flashed)
+                    if (octopus.Energize())
                     {
-                        octopus.Energy += 1;
+                        flashes++;
 
-                        if (octopus.Flashed)
-                        {
-                            flashes++;
+                        (int startRow, int endRow) = GetRange(row, octopi.Height);
+                        (int startCol, int endCol) = GetRange(column, octopi.Width);
 
-                            (int startRow, int endRow) = GetRange(row, octopi.Height);
-                            (int startCol, int endCol) = GetRange(column, octopi.Width);
-
-                            flashes += Step(octopi, new Point(startCol, startRow), new Point(endCol, endRow));
-                        }
+                        flashes += Step(octopi, new Point(startCol, startRow), new Point(endCol, endRow));
                     }
                 }
             }
@@ -101,17 +96,19 @@ namespace AoC2021Runner
 
         private class Octopus
         {
-            public int Energy { get; set; }
-            public bool Flashed => Energy > 9;
+            public int Energy { get; private set; }
 
             public Octopus(int energy)
             {
                 Energy = energy;
             }
 
+            public bool Energize()
+                => Energy++ == 9;
+
             public void Reset()
             {
-                if (Flashed)
+                if (Energy > 9)
                 {
                     Energy = 0;
                 }
