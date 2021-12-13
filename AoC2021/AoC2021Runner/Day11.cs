@@ -74,9 +74,8 @@ namespace AoC2021Runner
                     {
                         octopus.Energy += 1;
 
-                        if (octopus.Energy > 9)
+                        if (octopus.Flashed)
                         {
-                            octopus.Flashed = true;
                             flashes++;
 
                             (int startRow, int endRow) = GetRange(row, octopi.Height);
@@ -103,19 +102,17 @@ namespace AoC2021Runner
         private class Octopus
         {
             public int Energy { get; set; }
-            public bool Flashed { get; set; }
+            public bool Flashed => Energy > 9;
 
             public Octopus(int energy)
             {
                 Energy = energy;
-                Flashed = false;
             }
 
             public void Reset()
             {
                 if (Flashed)
                 {
-                    Flashed = false;
                     Energy = 0;
                 }
             }
