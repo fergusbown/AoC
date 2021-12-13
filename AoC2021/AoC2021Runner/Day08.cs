@@ -19,7 +19,7 @@
             return notes.Select(n => Decode(n.Input, n.Output)).Sum().ToString();
         }
 
-        private IReadOnlyCollection<(string[] Input, string[] Output)> GetInput(string input)
+        private static IReadOnlyCollection<(string[] Input, string[] Output)> GetInput(string input)
         {
             return input
                 .StringsForDay()
@@ -31,7 +31,7 @@
                 .ToArray();
         }
 
-        private int Decode(string[] input, string[] output)
+        private static int Decode(string[] input, string[] output)
         {
             HashSet<char>[] inputHashSets = input.Select(i => new HashSet<char>(i)).ToArray();
             HashSet<char>[] outputHashSets = output.Select(i => new HashSet<char>(i)).ToArray();
@@ -75,17 +75,6 @@
 
             return result;
         }
-
-        private const string exampleData = @"be cfbegad cbdgef fgaecd cgeb fdcge agebfd fecdb fabcd edb | fdgacbe cefdb cefbgd gcbe
-edbfga begcd cbg gc gcadebf fbgde acbgfd abcde gfcbed gfec | fcgedb cgb dgebacf gc
-fgaebd cg bdaec gdafb agbcfd gdcbef bgcad gfac gcb cdgabef | cg cg fdcagb cbg
-fbegcd cbd adcefb dageb afcb bc aefdc ecdab fgdeca fcdbega | efabcd cedba gadfec cb
-aecbfdg fbg gf bafeg dbefa fcge gcbea fcaegb dgceab fcbdga | gecf egdcabf bgf bfgea
-fgeab ca afcebg bdacfeg cfaedg gcfdb baec bfadeg bafgc acf | gebdcfa ecba ca fadegcb
-dbcfg fgd bdegcaf fgec aegbdf ecdfab fbedc dacgb gdcebf gf | cefg dcbef fcge gbcadfe
-bdfegc cbegaf gecbf dfcage bdacg ed bedf ced adcbefg gebcd | ed bcgafe cdgba cbgef
-egadfb cdbfeg cegd fecab cgb gbdefca cg fgcdab egfdb bfceg | gbdfcae bgc cg cgb
-gcafb gcf dcaebfg ecagb gf abcdeg gaef cafbge fdbac fegbdc | fgae cfgab fg bagce";
 
         private const string inputData = @"ecbad fdeacg gaecbd gbae gfcdbea cadge fcagdb abc cfdbe ab | beag bac dacgbe aegb
 gad agcfb afegcd afed gacdf gdfce ad cfdgbe cfgdeba bdcgea | gbdecf cdgeaf abcgde ad

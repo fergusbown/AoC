@@ -27,7 +27,7 @@ namespace AoC2021Runner
             return Draw(paper);
         }
 
-        private Span2D<bool> GetPaper(string input, out IReadOnlyCollection<(char Axis, int Position)> folds)
+        private static Span2D<bool> GetPaper(string input, out IReadOnlyCollection<(char Axis, int Position)> folds)
         {
             var paperAndFolds = input.Split($"{Environment.NewLine}{Environment.NewLine}");
             folds = paperAndFolds[1]
@@ -61,7 +61,7 @@ namespace AoC2021Runner
 
             int width = maxX + 1;
             int height = maxY + 1;
-            Span2D<bool> result = new Span2D<bool>(new bool[width * height], height, width);
+            Span2D<bool> result = new(new bool[width * height], height, width);
 
             foreach ((var x, var y) in dots)
             {
@@ -71,7 +71,7 @@ namespace AoC2021Runner
             return result;
         }
 
-        private int DotCount(Span2D<bool> paper)
+        private static int DotCount(Span2D<bool> paper)
         {
             int dotCount = 0;
 
@@ -86,9 +86,9 @@ namespace AoC2021Runner
             return dotCount;
         }
 
-        private string Draw(Span2D<bool> paper)
+        private static string Draw(Span2D<bool> paper)
         {
-            StringBuilder debug = new StringBuilder();
+            StringBuilder debug = new();
 
             debug.AppendLine();
 
@@ -106,7 +106,7 @@ namespace AoC2021Runner
             return debug.ToString();
         }
 
-        private Span2D<bool> Fold(Span2D<bool> paper, char axis, int position)
+        private static Span2D<bool> Fold(Span2D<bool> paper, char axis, int position)
         {
             Span2D<bool> stationary;
             Span2D<bool> folded;
@@ -142,28 +142,6 @@ namespace AoC2021Runner
 
             return larger;
         }
-
-        private const string exampleData = @"6,10
-0,14
-9,10
-0,3
-10,4
-4,11
-6,0
-6,12
-4,1
-0,13
-10,12
-3,4
-3,0
-8,4
-1,10
-2,14
-8,10
-9,0
-
-fold along y=7
-fold along x=5";
 
         private const string inputData = @"994,18
 1014,343

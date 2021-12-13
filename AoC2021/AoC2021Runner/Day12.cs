@@ -29,7 +29,7 @@
 
         private class Caves
         {
-            private readonly Dictionary<string, Cave> caves = new Dictionary<string, Cave>();
+            private readonly Dictionary<string, Cave> caves = new();
             public Cave StartCave { get; }
             public Cave EndCave { get; }
 
@@ -71,7 +71,7 @@
             {
                 HashSet<string> seenPaths = new();
                 HashSet<string> validPaths = new();
-                Stack<Path> pendingPaths = new Stack<Path>();
+                Stack<Path> pendingPaths = new();
 
                 pendingPaths.Push(new Path(this.StartCave));
 
@@ -105,7 +105,7 @@
 
             public bool IncludesSmallCaveRevisit { get; }
 
-            private IReadOnlyCollection<Cave> route;
+            private readonly IReadOnlyCollection<Cave> route;
 
             public Path(Cave cave)
             {
@@ -141,7 +141,7 @@
 
         private class Cave
         {
-            private HashSet<Cave> linkedCaves = new HashSet<Cave>();
+            private readonly HashSet<Cave> linkedCaves = new();
 
             public Cave(string name)
             {
@@ -160,15 +160,6 @@
 
             public IEnumerable<Cave> LinkedCaves => linkedCaves;
         }
-
-
-        private const string exampleData = @"start-A
-start-b
-A-c
-A-b
-b-d
-A-end
-b-end";
 
         private const string inputData = @"start-YY
 av-rz

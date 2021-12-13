@@ -10,8 +10,8 @@ namespace AoC2021Runner
             var octopi = GetInput(inputData);
 
             int flashes = 0;
-            Point topLeft = new Point(0, 0);
-            Point bottomRight = new Point(octopi.Width - 1, octopi.Height - 1);
+            Point topLeft = new(0, 0);
+            Point bottomRight = new(octopi.Width - 1, octopi.Height - 1);
             for (int i = 0; i < 100; i++)
             {
                 Reset(octopi);
@@ -26,8 +26,8 @@ namespace AoC2021Runner
             var octopi = GetInput(inputData);
 
             int steps = 1;
-            Point topLeft = new Point(0, 0);
-            Point bottomRight = new Point(octopi.Width - 1, octopi.Height - 1);
+            Point topLeft = new(0, 0);
+            Point bottomRight = new(octopi.Width - 1, octopi.Height - 1);
 
             while(Step(octopi, topLeft, bottomRight) != octopi.Length)
             {
@@ -38,7 +38,7 @@ namespace AoC2021Runner
             return steps.ToString();
         }
 
-        private Span2D<Octopus> GetInput(string input)
+        private static Span2D<Octopus> GetInput(string input)
         {
             var levels = input
                 .Replace(Environment.NewLine, string.Empty)
@@ -50,7 +50,7 @@ namespace AoC2021Runner
             return new Span2D<Octopus>(levels, size, size);
         }
 
-        private void Reset(Span2D<Octopus> octopi)
+        private static void Reset(Span2D<Octopus> octopi)
         {
             for (int row = 0; row < octopi.Height; row++)
             {
@@ -114,17 +114,6 @@ namespace AoC2021Runner
                 }
             }
         }
-
-        private const string exampleData = @"5483143223
-2745854711
-5264556173
-6141336146
-6357385478
-4167524645
-2176841721
-6882881134
-4846848554
-5283751526";
 
         private const string inputData = @"2682551651
 3223134263

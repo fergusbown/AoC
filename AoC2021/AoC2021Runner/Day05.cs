@@ -11,7 +11,7 @@ namespace AoC2021Runner
         public string Part2()
             => Solve(p => true);
 
-        public string Solve(Func<(Point Start, Point End), bool> filter)
+        public static string Solve(Func<(Point Start, Point End), bool> filter)
         {
             var result = GetInput(inputData)
                 .Where(p => filter(p))
@@ -23,7 +23,7 @@ namespace AoC2021Runner
             return $"{result}";
         }
 
-        private IReadOnlyCollection<(Point Start, Point End)> GetInput(string data)
+        private static IReadOnlyCollection<(Point Start, Point End)> GetInput(string data)
         {
             return data.StringsForDay()
                 .Select(s =>
@@ -34,7 +34,7 @@ namespace AoC2021Runner
                 .ToArray();
         }
 
-        private IEnumerable<Point> PointsBetween(Point start, Point end)
+        private static IEnumerable<Point> PointsBetween(Point start, Point end)
         {
             int xInc = GetIncrementAmount(start.X, end.X);
             int yInc = GetIncrementAmount(start.Y, end.Y);
@@ -68,17 +68,6 @@ namespace AoC2021Runner
                 }
             }
         }
-
-        private const string exampleData = @"0,9 -> 5,9
-8,0 -> 0,8
-9,4 -> 3,4
-2,2 -> 2,1
-7,0 -> 7,4
-6,4 -> 2,0
-0,9 -> 2,9
-3,4 -> 1,4
-0,0 -> 8,8
-5,5 -> 8,2";
 
         private const string inputData = @"911,808 -> 324,221
 161,890 -> 808,243

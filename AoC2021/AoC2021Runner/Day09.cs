@@ -71,9 +71,9 @@ namespace AoC2021Runner
                 .Aggregate((a, b) => a * b).ToString();
         }
 
-        private Span2D<int> GetInputData(string input)
+        private static Span2D<int> GetInputData(string input)
         {
-            List<int> digits = new List<int>(input.Length);
+            List<int> digits = new(input.Length);
             int width = input.IndexOf(Environment.NewLine);
 
             foreach(char c in input)
@@ -131,13 +131,6 @@ namespace AoC2021Runner
                 return 0;
             }
         }
-
-
-        private const string exampleData = @"2199943210
-3987894921
-9856789892
-8767896789
-9899965678";
 
         private const string inputData = @"5678998989432198943298876799876586789998999434988989999876544345789987654545678931299765458679432456
 4556987678949987899097655679767345678987898949876579899987432134889987653237889542989654323488921347

@@ -8,7 +8,7 @@
         public string Part2()
             => CalculatePosition(new AimPosition());
 
-        private string CalculatePosition(IPosition position)
+        private static string CalculatePosition(IPosition position)
         {
             (Instruction, int)[] instructions = inputData.InstructionsForDay<Instruction>();
 

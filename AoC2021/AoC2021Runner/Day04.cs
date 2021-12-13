@@ -58,7 +58,7 @@ namespace AoC2021Runner
         {
             var inputPieces = data.Split($"{Environment.NewLine}{Environment.NewLine}");
             var calls = inputPieces[0].Split(',').Select(x => int.Parse(x)).ToArray();
-            List<Board> boards = new List<Board>();
+            List<Board> boards = new();
 
             foreach (var boardText in inputPieces.Skip(1))
             {
@@ -70,8 +70,8 @@ namespace AoC2021Runner
 
         private class Board
         {
-            private int[] boardValues;
-            private bool[] calledValues;
+            private readonly int[] boardValues;
+            private readonly bool[] calledValues;
 
 
             public Board(string boardText)
@@ -83,8 +83,8 @@ namespace AoC2021Runner
 
             public int Play(int call)
             {
-                Span2D<int> board = new Span2D<int>(this.boardValues, 5, 5);
-                Span2D<bool> calls = new Span2D<bool>(this.calledValues, 5, 5);
+                Span2D<int> board = new(this.boardValues, 5, 5);
+                Span2D<bool> calls = new(this.calledValues, 5, 5);
 
                 if (IsBingo(call, board, calls))
                 {
@@ -96,7 +96,7 @@ namespace AoC2021Runner
                 }
             }
 
-            private bool IsBingo(int call, Span2D<int> board, Span2D<bool> calls)
+            private static bool IsBingo(int call, Span2D<int> board, Span2D<bool> calls)
             {
                 for (int rowIndex = 0; rowIndex < board.Height; rowIndex++)
                 {
@@ -126,7 +126,7 @@ namespace AoC2021Runner
                 }
             }
 
-            private int GetScore(int call, Span2D<int> board, Span2D<bool> calls)
+            private static int GetScore(int call, Span2D<int> board, Span2D<bool> calls)
             {
                 int uncalled = 0;
                 for (int rowIndex = 0; rowIndex < calls.Height; rowIndex++)

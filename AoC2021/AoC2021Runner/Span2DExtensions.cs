@@ -13,7 +13,7 @@ namespace AoC2021Runner
         public static void TransposeColumns<T>(this Span2D<T> span)
         {
             int firstColumnIndex = span.Width - 1;
-            Span<T> temp = new Span<T>(new T[span.Height]);
+            Span<T> temp = new(new T[span.Height]);
             for (int secondColumnIndex = 0; secondColumnIndex < span.Width / 2; secondColumnIndex++, firstColumnIndex--)
             {
                 RefEnumerable<T> swapping1 = span.GetColumn(firstColumnIndex);
@@ -28,7 +28,7 @@ namespace AoC2021Runner
         public static void TransposeRows<T>(this Span2D<T> span)
         {
             int firstRowIndex = span.Height - 1;
-            Span<T> temp = new Span<T>(new T[span.Width]);
+            Span<T> temp = new(new T[span.Width]);
             for (int secondRowIndex = 0; secondRowIndex < span.Height / 2; secondRowIndex++, firstRowIndex--)
             {
                 Span<T> swapping1 = span.GetRowSpan(firstRowIndex);

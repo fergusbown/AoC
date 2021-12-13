@@ -8,7 +8,7 @@
         public string Part2()
             => IncreasingCount(GetWindowSums(inputData.IntsForDay(), 3)).ToString();
 
-        private int[] GetWindowSums(int[] input, int windowSize)
+        private static int[] GetWindowSums(int[] input, int windowSize)
         {
             int[] windows = new int[input.Length - windowSize + 1];
 
@@ -25,7 +25,7 @@
             return windows;
         }
 
-        private int IncreasingCount(int[] input)
+        private static int IncreasingCount(int[] input)
         {
             int previous = input[0];
             int increasingCount = 0;

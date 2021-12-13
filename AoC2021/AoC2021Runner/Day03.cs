@@ -8,8 +8,8 @@ namespace AoC2021Runner
         {
             var buckets = BucketInput(inputData);
 
-            StringBuilder gammaBuilder = new StringBuilder();
-            StringBuilder epsilonBuilder = new StringBuilder();
+            StringBuilder gammaBuilder = new();
+            StringBuilder epsilonBuilder = new();
 
             for (int i = 0; i < buckets.Length; i++)
             {
@@ -41,7 +41,7 @@ namespace AoC2021Runner
             return $"{oxygen.ToIntFromBinaryString() * co2.ToIntFromBinaryString()}";
         }
 
-        private string Filter((HashSet<string> Ones, HashSet<string> Zeros)[] buckets, Func<HashSet<string>, HashSet<string>, HashSet<string>> filter)
+        private static string Filter((HashSet<string> Ones, HashSet<string> Zeros)[] buckets, Func<HashSet<string>, HashSet<string>, HashSet<string>> filter)
         {
             var remaining = new HashSet<string>(buckets[0].Ones);
             remaining.UnionWith(buckets[0].Zeros);
@@ -88,7 +88,7 @@ namespace AoC2021Runner
             }
         }
 
-        private (HashSet<string> Ones, HashSet<string> Zeros)[] BucketInput(string data)
+        private static (HashSet<string> Ones, HashSet<string> Zeros)[] BucketInput(string data)
         {
             string[] lines = data.StringsForDay();
             (HashSet<string> Ones, HashSet<string> Zeros)[] entryAtIndex = new(HashSet<string> Ones, HashSet<string> Zeros)[lines[0].Length];

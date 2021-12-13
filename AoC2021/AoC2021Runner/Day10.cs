@@ -28,7 +28,7 @@
 
         private (LineState State, long Score) GetLineState(string input)
         {
-            Stack<char> openings = new Stack<char>();
+            Stack<char> openings = new();
 
             foreach (char ch in input)
             {
@@ -62,7 +62,7 @@
             }
         }
 
-        private Dictionary<char, char> closingToOpening = new()
+        private readonly Dictionary<char, char> closingToOpening = new()
         {
             { ')', '(' },
             { ']', '[' },
@@ -70,7 +70,7 @@
             { '>', '<' },
         };
 
-        private Dictionary<char, int> closingToScore = new()
+        private readonly Dictionary<char, int> closingToScore = new()
         {
             { ')', 3 },
             { ']', 57 },
@@ -78,7 +78,7 @@
             { '>', 25137 },
         };
 
-        private Dictionary<char, int> openingToScore = new()
+        private readonly Dictionary<char, int> openingToScore = new()
         {
             { '(', 1 },
             { '[', 2 },
@@ -92,17 +92,6 @@
             Corrupt,
             Incomplete
         }
-
-        private const string exampleData = @"[({(<(())[]>[[{[]{<()<>>
-[(()[<>])]({[<{<<[]>>(
-{([(<{}[<>[]}>{[]{[(<()>
-(((({<>}<{<{<>}{[]{[]{}
-[[<[([]))<([[{}[[()]]]
-[{[{({}]{}}([{[{{{}}([]
-{<[[]]>}<{[{[{[]{()[[[]
-[<(<(<(<{}))><([]([]()
-<{([([[(<>()){}]>(<<{{
-<{([{{}}[<[[[<>{}]]]>[]]";
 
         private const string inputData = @"<([<({{[<{{((<()>({}{})}<({}<>)>)}}>[<{(([()<>]<<>{}>))}<{({<>[]}<<>>)[([]<>)<{}{}>]}>>]]}}[<[{{[{{[<><>]
 [<{{{[((({<<<[()[]]{()()}><{<><>}(<>{})>><<{<><>}{{}[]}>{(()())[[]{}]}>>{[[(<>[]){<>{}}][(()())(()[])]]
