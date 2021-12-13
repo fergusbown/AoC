@@ -10,7 +10,7 @@ namespace AoC2021Runner
 {
     public static class Span2DExtensions
     {
-        public static void ReverseColumns<T>(this Span2D<T> span)
+        public static void TransposeColumns<T>(this Span2D<T> span)
         {
             int firstColumnIndex = span.Width - 1;
             Span<T> temp = new Span<T>(new T[span.Height]);
@@ -25,7 +25,7 @@ namespace AoC2021Runner
             }
         }
 
-        public static void ReverseRows<T>(this Span2D<T> span)
+        public static void TransposeRows<T>(this Span2D<T> span)
         {
             int firstRowIndex = span.Height - 1;
             Span<T> temp = new Span<T>(new T[span.Width]);

@@ -116,14 +116,14 @@ namespace AoC2021Runner
                 stationary = paper.Slice(0, 0, paper.Height, position);
                 folded = paper.Slice(0, position + 1, paper.Height, paper.Width - position - 1);
 
-                folded.ReverseColumns();
+                folded.TransposeColumns();
             }
             else //folding along the horizontal
             {
                 stationary = paper.Slice(0, 0, position, paper.Width);
                 folded = paper.Slice(position + 1, 0, paper.Height - position - 1, paper.Width);
 
-                folded.ReverseRows();
+                folded.TransposeRows();
             }
 
             Span2D<bool> larger = stationary.Length > folded.Length ? stationary : folded;
