@@ -52,10 +52,10 @@
             else
             {
                 long score = 0;
-                while (openings.Count > 0)
+                while (openings.TryPop(out var opening))
                 {
                     score *= 5;
-                    score += openingToScore[openings.Pop()];
+                    score += openingToScore[opening];
                 }
 
                 return (LineState.Incomplete, score);

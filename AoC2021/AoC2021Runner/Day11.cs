@@ -25,19 +25,17 @@ namespace AoC2021Runner
         {
             var octopi = GetInput(inputData);
 
-            int steps = 0;
+            int steps = 1;
             Point topLeft = new Point(0, 0);
             Point bottomRight = new Point(octopi.Width - 1, octopi.Height - 1);
 
-            while (true)
+            while(Step(octopi, topLeft, bottomRight) != octopi.Length)
             {
                 steps++;
                 Reset(octopi);
-                if (Step(octopi, topLeft, bottomRight) == octopi.Length)
-                {
-                    return steps.ToString();
-                }
             }
+
+            return steps.ToString();
         }
 
         private Span2D<Octopus> GetInput(string input)
