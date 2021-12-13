@@ -2,6 +2,13 @@
 {
     internal class Day12 : IDayChallenge
     {
+        private readonly string inputData;
+
+        public Day12(string inputData)
+        {
+            this.inputData = inputData;
+        }
+
         public string Part1()
         {
             var caves = new Caves(inputData);
@@ -160,32 +167,5 @@
 
             public IEnumerable<Cave> LinkedCaves => linkedCaves;
         }
-
-        private const string inputData = @"start-YY
-av-rz
-rz-VH
-fh-av
-end-fh
-sk-gp
-ae-av
-YY-gp
-end-VH
-CF-qz
-qz-end
-qz-VG
-start-gp
-VG-sk
-rz-YY
-VH-sk
-rz-gp
-VH-av
-VH-fh
-sk-rz
-YY-sk
-av-gp
-rz-qz
-VG-start
-sk-fh
-VG-av";
     }
 }

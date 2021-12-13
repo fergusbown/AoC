@@ -5,6 +5,13 @@ namespace AoC2021Runner
 {
     internal class Day11 : IDayChallenge
     {
+        private readonly string inputData;
+
+        public Day11(string inputData)
+        {
+            this.inputData = inputData;
+        }
+
         public string Part1()
         {
             var octopi = GetInput(inputData);
@@ -114,16 +121,5 @@ namespace AoC2021Runner
                 }
             }
         }
-
-        private const string inputData = @"2682551651
-3223134263
-5848471412
-7438334862
-8731321573
-6415233574
-5564726843
-6683456445
-8582346112
-4617588236";
     }
 }

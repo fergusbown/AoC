@@ -8,7 +8,11 @@ IEnumerable<(int Day, IDayChallenge Solution)> daySolutions = Assembly
     .GetExecutingAssembly()
     .GetTypes()
     .Where(t => t.IsAssignableTo(typeof(IDayChallenge)) && t.IsClass)
-    .Select(t => (int.Parse(t.Name.Replace("Day", "")), (IDayChallenge)Activator.CreateInstance(t)!))
+    .Select(t =>
+    {
+        string inputData = InputData.InputForDay(t);
+        return (int.Parse(t.Name.Replace("Day", "")), (IDayChallenge)Activator.CreateInstance(t, inputData)!);
+    })
     .OrderBy(t => t.Item1);
 
 foreach ((int day, IDayChallenge solution) in daySolutions)
