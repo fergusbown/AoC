@@ -31,12 +31,11 @@ namespace AoC2021Runner
         {
             var paperAndFolds = input.Split($"{Environment.NewLine}{Environment.NewLine}");
             folds = paperAndFolds[1]
-                .Replace("fold along ", "")
                 .Split(Environment.NewLine)
                 .Select(f =>
                 {
                     var instruction = f.Split('=');
-                    return (instruction[0][0], int.Parse(instruction[1]));
+                    return (instruction[0][11], int.Parse(instruction[1]));
                 })
                 .ToArray();
 
