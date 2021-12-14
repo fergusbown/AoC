@@ -58,13 +58,13 @@ internal class Day14 : IDayChallenge
                     var rule = x.Split(" -> ");
                     var result = ((rule[0][0], rule[0][1]), rule[1][0]);
 
-                        //ensure any element we may see is pre-added for simplicity
-                        _ = elementCounts.TryAdd(result.Item1.Item1, 0);
+                    //ensure any element we may see is pre-added for simplicity
+                    _ = elementCounts.TryAdd(result.Item1.Item1, 0);
                     _ = elementCounts.TryAdd(result.Item1.Item2, 0);
                     _ = elementCounts.TryAdd(result.Item2, 0);
 
-                        //ensure any pair we may see is pre-added for simplicity
-                        _ = pairCounts.TryAdd(result.Item1, 0);
+                    //ensure any pair we may see is pre-added for simplicity
+                    _ = pairCounts.TryAdd(result.Item1, 0);
                     _ = pairCounts.TryAdd((result.Item1.Item1, result.Item2), 0);
                     _ = pairCounts.TryAdd((result.Item2, result.Item1.Item2), 0);
 
