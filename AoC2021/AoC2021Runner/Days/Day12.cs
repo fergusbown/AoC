@@ -19,16 +19,7 @@ internal class Day12 : IDayChallenge
         return caves.GetPaths(CanRevisitSmallCave).ToString();
 
         bool CanRevisitSmallCave(Cave c, Path p)
-        {
-            if (c == caves.StartCave || c == caves.EndCave)
-            {
-                return false;
-            }
-            else
-            {
-                return !p.IncludesSmallCaveRevisit;
-            }
-        }
+            => c != caves.StartCave && c != caves.EndCave && !p.IncludesSmallCaveRevisit;
     }
 
 
