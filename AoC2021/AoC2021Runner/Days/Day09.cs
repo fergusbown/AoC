@@ -1,142 +1,141 @@
 ﻿using Microsoft.Toolkit.HighPerformance;
 
-namespace AoC2021Runner
+namespace AoC2021Runner;
+
+internal class Day09 : IDayChallenge
 {
-    internal class Day09 : IDayChallenge
+    private readonly int[,] inputArray;
+
+    public Day09(string inputData)
     {
-        private readonly int[,] inputArray;
+        this.inputArray = GetInputData(inputData).ToArray();
+    }
 
-        public Day09(string inputData)
+    public string Part1()
+    {
+        Span2D<int> input = new(inputArray);
+
+        int sumOfRisk = 0;
+        for (int rowIndex = 0; rowIndex < input.Height; rowIndex++)
         {
-            this.inputArray = GetInputData(inputData).ToArray();
+            for (int columnIndex = 0; columnIndex < input.Width; columnIndex++)
+            {
+                sumOfRisk += GetRiskLevel(input, rowIndex, columnIndex);
+            }
         }
 
-        public string Part1()
-        {
-            Span2D<int> input = new(inputArray);
+        return sumOfRisk.ToString();
+    }
 
-            int sumOfRisk = 0;
-            for (int rowIndex = 0; rowIndex < input.Height; rowIndex++)
+    public string Part2()
+    {
+        Span2D<int> input = new(inputArray);
+
+        List<HashSet<(int Row, int Column)>> basins = new();
+        Stack<(int Row, int Column)> pending = new();
+
+        HashSet<(int Row, int Column)> remaining = new();
+
+        for (int rowIndex = 0; rowIndex < input.Height; rowIndex++)
+        {
+            for (int columnIndex = 0; columnIndex < input.Width; columnIndex++)
             {
-                for (int columnIndex = 0; columnIndex < input.Width; columnIndex++)
+                if (input[rowIndex, columnIndex] != 9)
                 {
-                    sumOfRisk += GetRiskLevel(input, rowIndex, columnIndex);
+                    remaining.Add((rowIndex, columnIndex));
                 }
             }
-
-            return sumOfRisk.ToString();
         }
 
-        public string Part2()
+        while (remaining.Count > 0)
         {
-            Span2D<int> input = new(inputArray);
+            HashSet<(int Row, int Column)> currentBasin = new();
+            basins.Add(currentBasin);
 
-            List<HashSet<(int Row, int Column)>> basins = new();
-            Stack<(int Row, int Column)> pending = new();
+            var item = remaining.First();
+            remaining.Remove(item);
+            pending.Push(item);
 
-            HashSet<(int Row, int Column)> remaining = new();
-
-            for (int rowIndex = 0; rowIndex < input.Height; rowIndex++)
+            while (pending.Count > 0)
             {
-                for (int columnIndex = 0; columnIndex < input.Width; columnIndex++)
+                item = pending.Pop();
+                currentBasin.Add(item);
+
+                foreach (var (row, column, height) in GetAdjacencies(input, item.Row, item.Column))
                 {
-                    if (input[rowIndex, columnIndex] != 9)
+                    if (remaining.Remove((row, column)))
                     {
-                        remaining.Add((rowIndex, columnIndex));
+                        pending.Push((row, column));
                     }
                 }
             }
-
-            while (remaining.Count > 0)
-            {
-                HashSet<(int Row, int Column)> currentBasin = new();
-                basins.Add(currentBasin);
-
-                var item = remaining.First();
-                remaining.Remove(item);
-                pending.Push(item);
-
-                while (pending.Count > 0)
-                {
-                    item = pending.Pop();
-                    currentBasin.Add(item);
-
-                    foreach (var (row, column, height) in GetAdjacencies(input, item.Row, item.Column))
-                    {
-                        if (remaining.Remove((row, column)))
-                        {
-                            pending.Push((row, column));
-                        }
-                    }
-                }
-            }
-
-            return basins
-                .Select(b => b.Count)
-                .OrderByDescending(b => b)
-                .Take(3)
-                .Aggregate((a, b) => a * b).ToString();
         }
 
-        private static Span2D<int> GetInputData(string input)
+        return basins
+            .Select(b => b.Count)
+            .OrderByDescending(b => b)
+            .Take(3)
+            .Aggregate((a, b) => a * b).ToString();
+    }
+
+    private static Span2D<int> GetInputData(string input)
+    {
+        List<int> digits = new(input.Length);
+        int width = input.IndexOf(Environment.NewLine);
+
+        foreach (char c in input)
         {
-            List<int> digits = new(input.Length);
-            int width = input.IndexOf(Environment.NewLine);
-
-            foreach(char c in input)
+            switch (c)
             {
-                switch (c)
-                {
-                    case '0':
-                    case '1':
-                    case '2':
-                    case '3':
-                    case '4':
-                    case '5':
-                    case '6':
-                    case '7':
-                    case '8':
-                    case '9':
-                        digits.Add(c - '0');
-                        break;
-                    default:
-                        break;
-                }
+                case '0':
+                case '1':
+                case '2':
+                case '3':
+                case '4':
+                case '5':
+                case '6':
+                case '7':
+                case '8':
+                case '9':
+                    digits.Add(c - '0');
+                    break;
+                default:
+                    break;
             }
-
-            return new Span2D<int>(digits.ToArray(), digits.Count / width, width);
         }
 
-        private static IEnumerable<(int Row, int Column, int Height)> GetAdjacencies(Span2D<int> input, int row, int column)
+        return new Span2D<int>(digits.ToArray(), digits.Count / width, width);
+    }
+
+    private static IEnumerable<(int Row, int Column, int Height)> GetAdjacencies(Span2D<int> input, int row, int column)
+    {
+        List<(int Row, int Rolumn, int Value)> result = new();
+
+        if (row > 0)
+            result.Add((row - 1, column, input[row - 1, column]));
+
+        if (row < input.Height - 1)
+            result.Add((row + 1, column, input[row + 1, column]));
+
+        if (column > 0)
+            result.Add((row, column - 1, input[row, column - 1]));
+
+        if (column < input.Width - 1)
+            result.Add((row, column + 1, input[row, column + 1]));
+
+        return result;
+    }
+
+    private static int GetRiskLevel(Span2D<int> input, int row, int column)
+    {
+        int height = input[row, column];
+        if (GetAdjacencies(input, row, column).All(adj => adj.Height > height))
         {
-            List<(int Row, int Rolumn, int Value)> result = new ();
-
-            if (row > 0)
-                result.Add((row - 1, column, input[row - 1, column]));
-            
-            if (row < input.Height - 1)
-                result.Add((row + 1, column, input[row + 1, column]));
-
-            if (column > 0)
-                result.Add((row, column - 1, input[row, column - 1]));
-
-            if (column < input.Width - 1)
-                result.Add((row, column + 1, input[row, column + 1]));
-
-            return result;
+            return height + 1;
         }
-
-        private static int GetRiskLevel(Span2D<int> input, int row, int column)
+        else
         {
-            int height = input[row, column];
-            if (GetAdjacencies(input, row, column).All(adj => adj.Height > height))
-            {
-                return height + 1;
-            }
-            else
-            {
-                return 0;
-            }
+            return 0;
         }
     }
 }

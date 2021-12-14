@@ -1,67 +1,66 @@
 ﻿using Microsoft.Toolkit.HighPerformance;
 
-namespace AoC2021Runner
+namespace AoC2021Runner;
+
+internal class Day06 : IDayChallenge
 {
-    internal class Day06 : IDayChallenge
+    private readonly IReadOnlyCollection<int> initialState;
+
+    public Day06(string inputData)
     {
-        private readonly IReadOnlyCollection<int> initialState;
+        this.initialState = inputData.Split(',').Select(v => int.Parse(v)).ToArray();
+    }
 
-        public Day06(string inputData)
+    public string Part1()
+    {
+        return LanternFish.SimulateDay(initialState, 80).ToString();
+    }
+
+    public string Part2()
+    {
+        return LanternFish.SimulateDay(initialState, 256).ToString();
+    }
+
+    private class LanternFish
+    {
+        readonly LinkedList<long> countInState;
+
+        public LanternFish(IReadOnlyCollection<int> initialState)
         {
-            this.initialState = inputData.Split(',').Select(v => int.Parse(v)).ToArray();
-        }
+            long[] initialStateCount = new long[9];
 
-        public string Part1()
-        {
-            return LanternFish.SimulateDay(initialState, 80).ToString();
-        }
-
-        public string Part2()
-        {
-            return LanternFish.SimulateDay(initialState, 256).ToString();
-        }
-
-        private class LanternFish
-        {
-            readonly LinkedList<long> countInState;
-
-            public LanternFish(IReadOnlyCollection<int> initialState)
+            foreach (var group in initialState.GroupBy(s => s))
             {
-                long[] initialStateCount = new long[9];
-
-                foreach (var group in initialState.GroupBy(s => s))
-                {
-                    initialStateCount[group.Key] = group.Count();
-                }
-
-                this.countInState = new LinkedList<long>(initialStateCount);
+                initialStateCount[group.Key] = group.Count();
             }
 
-            public long MoveForward(int days)
+            this.countInState = new LinkedList<long>(initialStateCount);
+        }
+
+        public long MoveForward(int days)
+        {
+            for (int day = 0; day < days; day++)
             {
-                for (int day = 0; day < days; day++)
-                {
-                    //spawn as many new fish as are at zero
-                    var spawningFish = this.countInState.First!.Value;
+                //spawn as many new fish as are at zero
+                var spawningFish = this.countInState.First!.Value;
 
-                    //add that many new fish at max spawn duration (so the last)
-                    this.countInState.AddLast(spawningFish);
+                //add that many new fish at max spawn duration (so the last)
+                this.countInState.AddLast(spawningFish);
 
-                    // move all fish forward a day
-                    this.countInState.RemoveFirst();
+                // move all fish forward a day
+                this.countInState.RemoveFirst();
 
-                    //add spawning fish back at stage 6;
-                    this.countInState.Last!.Previous!.Previous!.Value += spawningFish;
-                }
-
-                return this.countInState.Sum();
+                //add spawning fish back at stage 6;
+                this.countInState.Last!.Previous!.Previous!.Value += spawningFish;
             }
 
-            public static long SimulateDay(IReadOnlyCollection<int> input, int days)
-            {
-                var fish = new LanternFish(input);
-                return fish.MoveForward(days);
-            }
+            return this.countInState.Sum();
+        }
+
+        public static long SimulateDay(IReadOnlyCollection<int> input, int days)
+        {
+            var fish = new LanternFish(input);
+            return fish.MoveForward(days);
         }
     }
 }

@@ -1,44 +1,43 @@
-﻿namespace AoC2021Runner
+﻿namespace AoC2021Runner;
+
+internal class Day07 : IDayChallenge
 {
-    internal class Day07 : IDayChallenge
+    private readonly int[] positions;
+
+    public Day07(string inputData)
     {
-        private readonly int[] positions;
+        this.positions = inputData.Split(',').Select(p => int.Parse(p)).ToArray();
+    }
 
-        public Day07(string inputData)
+    public string Part1()
+    {
+        return BruteForceIt(positions, d => d).ToString();
+    }
+
+    public string Part2()
+    {
+        return BruteForceIt(positions, d => ((d + 1) * d) / 2).ToString();
+    }
+
+    private static int BruteForceIt(int[] positions, Func<int, int> costToMoveDistance)
+    {
+        int cheapestYet = int.MaxValue;
+
+        for (int testPosition = positions.Min(); testPosition < positions.Max(); testPosition++)
         {
-            this.positions = inputData.Split(',').Select(p => int.Parse(p)).ToArray();
-        }
+            int cost = 0;
 
-        public string Part1()
-        {
-            return BruteForceIt(positions, d => d).ToString();
-        }
-
-        public string Part2()
-        {
-            return BruteForceIt(positions, d => ((d + 1) * d) / 2).ToString();
-        }
-
-        private static int BruteForceIt(int[] positions, Func<int, int> costToMoveDistance)
-        {
-            int cheapestYet = int.MaxValue;
-
-            for (int testPosition = positions.Min(); testPosition < positions.Max(); testPosition++)
+            foreach (var currentPosition in positions)
             {
-                int cost = 0;
-
-                foreach (var currentPosition in positions)
-                {
-                    cost += costToMoveDistance(Math.Abs(currentPosition - testPosition));
-                }
-
-                if (cost < cheapestYet)
-                {
-                    cheapestYet = cost;
-                }
+                cost += costToMoveDistance(Math.Abs(currentPosition - testPosition));
             }
 
-            return cheapestYet;
+            if (cost < cheapestYet)
+            {
+                cheapestYet = cost;
+            }
         }
+
+        return cheapestYet;
     }
 }

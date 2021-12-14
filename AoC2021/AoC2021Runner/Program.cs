@@ -1,7 +1,4 @@
-﻿// See https://aka.ms/new-console-template for more information
-
-
-using System.Diagnostics;
+﻿using System.Diagnostics;
 using System.Reflection;
 using AoC2021Runner;
 
