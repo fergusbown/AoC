@@ -23,7 +23,7 @@ internal class Day14 : IDayChallenge
         public IReadOnlyDictionary<(char, char), long> PairCounts { get; }
         public IReadOnlyDictionary<(char, char), char> PairTransitions { get; }
 
-        public long Strength => ElementCounts.Values.Max() - ElementCounts.Values.Min();
+        public long Strength => ElementCounts.Values.Max() - ElementCounts.Values.Where(c => c > 0).Min();
 
         public Polymer(string input)
         {
@@ -55,22 +55,22 @@ internal class Day14 : IDayChallenge
                 .Skip(2)
                 .Select(x =>
                 {
-                    var rule = x.Split(" -> ");
-                    var result = ((rule[0][0], rule[0][1]), rule[1][0]);
+                    // parse from "AB -> C"
+                    ((char, char) SourcePair, char InsertionCharacter) tarnsitionRule = ((x[0], x[1]), x[6]);
 
-                    //ensure any element we may see is pre-added for simplicity
-                    _ = elementCounts.TryAdd(result.Item1.Item1, 0);
-                    _ = elementCounts.TryAdd(result.Item1.Item2, 0);
-                    _ = elementCounts.TryAdd(result.Item2, 0);
+                    // ensure any element we may see is pre-added for simplicity
+                    _ = elementCounts.TryAdd(tarnsitionRule.SourcePair.Item1, 0);
+                    _ = elementCounts.TryAdd(tarnsitionRule.SourcePair.Item2, 0);
+                    _ = elementCounts.TryAdd(tarnsitionRule.InsertionCharacter, 0);
 
-                    //ensure any pair we may see is pre-added for simplicity
-                    _ = pairCounts.TryAdd(result.Item1, 0);
-                    _ = pairCounts.TryAdd((result.Item1.Item1, result.Item2), 0);
-                    _ = pairCounts.TryAdd((result.Item2, result.Item1.Item2), 0);
+                    // ensure any pair we may see is pre-added for simplicity
+                    _ = pairCounts.TryAdd(tarnsitionRule.SourcePair, 0);
+                    _ = pairCounts.TryAdd((tarnsitionRule.SourcePair.Item1, tarnsitionRule.InsertionCharacter), 0);
+                    _ = pairCounts.TryAdd((tarnsitionRule.InsertionCharacter, tarnsitionRule.SourcePair.Item2), 0);
 
-                    return result;
+                    return tarnsitionRule;
                 })
-                .ToDictionary(r => r.Item1, r => r.Item2);
+                .ToDictionary(r => r.SourcePair, r => r.InsertionCharacter);
 
             this.ElementCounts = elementCounts;
             this.PairCounts = pairCounts;

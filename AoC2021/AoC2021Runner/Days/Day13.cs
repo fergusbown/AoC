@@ -36,7 +36,7 @@ internal class Day13 : IDayChallenge
     }
 
     private Span2D<bool> GetPaper()
-        => new Span2D<bool>((bool[,])inputPaper.Clone());
+        => new((bool[,])inputPaper.Clone());
 
     private static Span2D<bool> GetPaper(string input, out IReadOnlyCollection<(char Axis, int Position)> folds)
     {
@@ -101,18 +101,14 @@ internal class Day13 : IDayChallenge
     {
         StringBuilder debug = new();
 
-        debug.AppendLine();
-
         for (int row = 0; row < paper.Height; row++)
         {
+            debug.AppendLine();
             for (int column = 0; column < paper.Width; column++)
             {
                 debug.Append(paper[row, column] ? '#' : ' ');
             }
-            debug.AppendLine();
         }
-
-        debug.AppendLine();
 
         return debug.ToString();
     }

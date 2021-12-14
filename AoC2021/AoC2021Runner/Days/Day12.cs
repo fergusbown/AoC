@@ -106,8 +106,10 @@ internal class Day12 : IDayChallenge
 
         public Path(Path prior, Cave next, bool isSmallCaveRevisit)
         {
-            var newRoute = new List<Cave>(prior.route);
-            newRoute.Add(next);
+            var newRoute = new List<Cave>(prior.route)
+            {
+                next
+            };
             this.route = newRoute;
             this.IncludesSmallCaveRevisit = prior.IncludesSmallCaveRevisit || isSmallCaveRevisit;
             this.Terminus = next;
