@@ -74,11 +74,7 @@ internal class Day15 : IDayChallenge
             for (int row = 0; row < height; row++)
             {
                 var sourceNode = nodes[(column, row)];
-
-                foreach (var adjacency in GetAdjacencies(row, column, height, width, nodes))
-                {
-                    sourceNode.AddEdgeTo(adjacency, adjacency.Data);
-                }
+                AddAdjacencies(row, column, height, width, sourceNode, nodes);
             }
         }
 
@@ -91,19 +87,22 @@ internal class Day15 : IDayChallenge
             return remainder == 0 ? 9 : remainder;
         }
 
-        static IEnumerable<Graph<int>.Node> GetAdjacencies(int row, int column, int height, int width, Dictionary<(int Column, int Row), Graph<int>.Node> nodes)
+        static void AddAdjacencies(int row, int column, int height, int width, Graph<int>.Node sourceNode, Dictionary<(int Column, int Row), Graph<int>.Node> nodes)
         {
             if (row > 0)
-                yield return nodes[(column, row - 1)];
+                AddEdgeBetween(sourceNode, nodes[(column, row - 1)]);
 
             if (row < height - 1)
-                yield return nodes[(column, row + 1)];
+                AddEdgeBetween(sourceNode, nodes[(column, row + 1)]);
 
             if (column > 0)
-                yield return nodes[(column - 1, row)];
+                AddEdgeBetween(sourceNode, nodes[(column - 1, row)]);
 
             if (column < width - 1)
-                yield return nodes[(column + 1, row)];
+                AddEdgeBetween(sourceNode, nodes[(column + 1, row)]);
+
+            static void AddEdgeBetween(Graph<int>.Node sourceNode, Graph<int>.Node targetNode)
+                => sourceNode.AddEdgeTo(targetNode, targetNode.Data);
         }
     }
 }
