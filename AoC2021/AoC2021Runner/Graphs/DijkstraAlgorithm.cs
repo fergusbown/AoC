@@ -177,6 +177,11 @@ internal static class DijkstraAlgorithm
 
         IReadOnlyCollection<Graph<TNodeData>.Edge> GetPath()
         {
+            if (!visitedNodeCosts.ContainsKey(end))
+            {
+                return Array.Empty<Graph<TNodeData>.Edge>();
+            }
+            
             List<Graph<TNodeData>.Node> nodePath = new()
             {
                 end,
