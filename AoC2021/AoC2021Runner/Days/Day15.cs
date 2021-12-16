@@ -2,6 +2,9 @@
 using Microsoft.Toolkit.HighPerformance;
 
 namespace AoC2021Runner;
+
+using IntGraph = Graph<DijkstraAlgorithm.DijkstraData<int>>;
+
 internal class Day15 : IDayChallenge
 {
     private readonly int[,] inputArray;
@@ -20,9 +23,9 @@ internal class Day15 : IDayChallenge
     private string GetOutput(int inflateBy)
     {
         Span2D<int> input = new(inputArray);
-        var inputGraph = BuildInputGraph(input, inflateBy);
-        (var cost, _) = DijkstraAlgorithm.FindShortestPath(inputGraph.Start, inputGraph.End);
-        return cost.ToString();
+        (var inputGraph, var startNode, var endNode) = BuildInputGraph(input, inflateBy);
+        (var cost, _) = DijkstraAlgorithm.FindShortestPath(inputGraph, startNode, endNode);
+        return cost!.Value.ToString();
     }
 
     private static Span2D<int> GetInputData(string input)
@@ -54,10 +57,10 @@ internal class Day15 : IDayChallenge
         return new Span2D<int>(digits.ToArray(), digits.Count / width, width);
     }
 
-    private static (Graph<int> Graph, Graph<int>.Node Start, Graph<int>.Node End) BuildInputGraph(Span2D<int> matrix, int inflateBy)
+    private static (IntGraph Graph, IntGraph.Node Start, IntGraph.Node End) BuildInputGraph(Span2D<int> matrix, int inflateBy)
     {
-        Dictionary<(int Column, int Row), Graph<int>.Node> nodes = new();
-        Graph<int> result = new();
+        Dictionary<(int Column, int Row), IntGraph.Node> nodes = new();
+        IntGraph result = new();
         int height = matrix.Height * inflateBy;
         int width = matrix.Height * inflateBy;
 
@@ -80,14 +83,14 @@ internal class Day15 : IDayChallenge
 
         return (result, nodes[(0, 0)], nodes[(width - 1, height - 1)]);
 
-        static int AdjustedWeight(int row, int column, Span2D<int> source)
+        static DijkstraAlgorithm.DijkstraData<int> AdjustedWeight(int row, int column, Span2D<int> source)
         {
             int weight = source[row % source.Height, column % source.Width] + (row / source.Height) + (column / source.Width);
             int remainder = weight % 9;
-            return remainder == 0 ? 9 : remainder;
+            return new DijkstraAlgorithm.DijkstraData<int>(remainder == 0 ? 9 : remainder);
         }
 
-        static void AddAdjacencies(int row, int column, int height, int width, Graph<int>.Node sourceNode, Dictionary<(int Column, int Row), Graph<int>.Node> nodes)
+        static void AddAdjacencies(int row, int column, int height, int width, IntGraph.Node sourceNode, Dictionary<(int Column, int Row), IntGraph.Node> nodes)
         {
             if (row > 0)
                 AddEdgeBetween(sourceNode, nodes[(column, row - 1)]);
@@ -101,8 +104,8 @@ internal class Day15 : IDayChallenge
             if (column < width - 1)
                 AddEdgeBetween(sourceNode, nodes[(column + 1, row)]);
 
-            static void AddEdgeBetween(Graph<int>.Node sourceNode, Graph<int>.Node targetNode)
-                => sourceNode.AddEdgeTo(targetNode, targetNode.Data);
+            static void AddEdgeBetween(IntGraph.Node sourceNode, IntGraph.Node targetNode)
+                => sourceNode.AddEdgeTo(targetNode, targetNode.Data.Data);
         }
     }
 }

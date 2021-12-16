@@ -28,9 +28,9 @@ internal class Day16 : IDayChallenge
 
         static IReadOnlyList<IPacket> ConsumePackets(Span<bool> input)
         {
-            List<IPacket> result = new List<IPacket>();
+            List<IPacket> result = new();
 
-            while(TryConsumePacket(ref input, out var packet))
+            while (TryConsumePacket(ref input, out var packet))
             {
                 result.Add(packet);
             }
@@ -48,7 +48,7 @@ internal class Day16 : IDayChallenge
             const long maximum = 3;
             const long greaterThan = 5;
             const long lessThan = 6;
-            const long equals =7;
+            const long equals = 7;
 
             if (TryConsumeInt(ref input, 3, out var version))
             {
@@ -148,7 +148,7 @@ internal class Day16 : IDayChallenge
                         {
                             if (TryConsumeInt(ref input, 11, out var subPacketsCount))
                             {
-                                List<IPacket> packets = new List<IPacket>((int)subPacketsCount);
+                                List<IPacket> packets = new((int)subPacketsCount);
                                 for (int i = 0; i < subPacketsCount; i++)
                                 {
                                     _ = TryConsumePacket(ref input, out var subPacket);
@@ -202,7 +202,7 @@ internal class Day16 : IDayChallenge
 
         long VersionSum { get; }
     }
-    private class Literal: IPacket
+    private class Literal : IPacket
     {
         public Literal(long version, long value)
         {
@@ -217,7 +217,7 @@ internal class Day16 : IDayChallenge
         public long VersionSum => Version;
     }
 
-    private abstract class Operator: IPacket
+    private abstract class Operator : IPacket
     {
         public Operator(long version, IReadOnlyList<IPacket> subPackets)
         {
@@ -308,7 +308,7 @@ internal class Day16 : IDayChallenge
     {
         bool[] result = new bool[input.Length * 4];
         int resultIndex = 0;
- 
+
         foreach (char ch in input)
         {
             switch (ch)
