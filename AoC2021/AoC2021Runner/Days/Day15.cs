@@ -3,7 +3,7 @@ using Microsoft.Toolkit.HighPerformance;
 
 namespace AoC2021Runner;
 
-using IntGraph = Graph<DijkstraAlgorithm.DijkstraData<int>>;
+using IntGraph = Graph<DijkstraAlgorithm.IData<int>>;
 
 internal class Day15 : IDayChallenge
 {
@@ -83,11 +83,11 @@ internal class Day15 : IDayChallenge
 
         return (result, nodes[(0, 0)], nodes[(width - 1, height - 1)]);
 
-        static DijkstraAlgorithm.DijkstraData<int> AdjustedWeight(int row, int column, Span2D<int> source)
+        static DijkstraAlgorithm.IData<int> AdjustedWeight(int row, int column, Span2D<int> source)
         {
             int weight = source[row % source.Height, column % source.Width] + (row / source.Height) + (column / source.Width);
             int remainder = weight % 9;
-            return new DijkstraAlgorithm.DijkstraData<int>(remainder == 0 ? 9 : remainder);
+            return new DijkstraAlgorithm.Data<int>(remainder == 0 ? 9 : remainder);
         }
 
         static void AddAdjacencies(int row, int column, int height, int width, IntGraph.Node sourceNode, Dictionary<(int Column, int Row), IntGraph.Node> nodes)
@@ -105,7 +105,7 @@ internal class Day15 : IDayChallenge
                 AddEdgeBetween(sourceNode, nodes[(column + 1, row)]);
 
             static void AddEdgeBetween(IntGraph.Node sourceNode, IntGraph.Node targetNode)
-                => sourceNode.AddEdgeTo(targetNode, targetNode.Data.Data);
+                => sourceNode.AddEdgeTo(targetNode, targetNode.Data.NodeData);
         }
     }
 }

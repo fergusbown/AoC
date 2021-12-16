@@ -7,59 +7,49 @@ namespace AoC2021Runner;
 /// </summary>
 internal static class DijkstraAlgorithm
 {
-    public class DijkstraData<TNodeData>
+    public interface IData<TNodeData>
     {
-        public DijkstraData(TNodeData data)
+        TNodeData NodeData { get; }
+
+        bool Visited { get; set; }
+
+        Graph<IData<TNodeData>>.Node? Parent { get; set; }
+
+        long? Cost { get; set; }
+    }
+
+    public class Data<TNodeData> : IData<TNodeData>
+    {
+        public Data(TNodeData data)
         {
-            Data = data;
+            NodeData = data;
         }
 
-        public TNodeData Data { get; }
+        public TNodeData NodeData { get; }
 
         public bool Visited { get; set; }
 
-        public Graph<DijkstraData<TNodeData>>.Node? Parent { get; private set; }
+        public Graph<IData<TNodeData>>.Node? Parent { get; set; }
 
-        public long? Cost { get; private set; }
-
-        public bool UpdateCost(long newCost, Graph<DijkstraData<TNodeData>>.Node? parent)
-        {
-            if (!Cost.HasValue || Cost > newCost)
-            {
-                Cost = newCost;
-                Parent = parent;
-                return true;
-            }
-            else
-            {
-                return false;
-            }
-        }
-
-        public void Reset()
-        {
-            Parent = null;
-            Visited = false;
-            Cost = null;
-        }
+        public long? Cost { get; set; }
     }
 
     /// <summary>
     /// Find the shortest route through a graph whose data is specialised to support the algorithm
     /// </summary>
-    public static (long? Cost, IReadOnlyCollection<Graph<DijkstraData<TNodeData>>.Edge>) FindShortestPath<TNodeData>(
-        Graph<DijkstraData<TNodeData>> graph,
-        Graph<DijkstraData<TNodeData>>.Node start, 
-        Graph<DijkstraData<TNodeData>>.Node end)
+    public static (long? Cost, IReadOnlyCollection<Graph<IData<TNodeData>>.Edge>) FindShortestPath<TNodeData>(
+        Graph<IData<TNodeData>> graph,
+        Graph<IData<TNodeData>>.Node start, 
+        Graph<IData<TNodeData>>.Node end)
     {
         foreach(var node in graph.Nodes)
         {
-            node.Data.Reset();
+            Reset(node);
         }
 
-        PriorityQueue<Graph<DijkstraData<TNodeData>>.Node, long> nodeCosts = new();
+        PriorityQueue<Graph<IData<TNodeData>>.Node, long> nodeCosts = new();
 
-        start.Data.UpdateCost(0, null);
+        UpdateCost(0, start, null);
         nodeCosts.Enqueue(start, 0);
 
         while(nodeCosts.TryDequeue(out var node, out _))
@@ -71,10 +61,10 @@ internal static class DijkstraAlgorithm
 
             foreach (var edge in node.Edges.Where(e => !e.End.Data.Visited))
             {
-                var endData = edge.End.Data;
+                var travelTo = edge.End;
                 var costToEnd = node.Data.Cost!.Value + edge.Weight;
 
-                if (endData.UpdateCost(costToEnd, node) && !endData.Visited)
+                if (UpdateCost(costToEnd, travelTo, node) && !travelTo.Data.Visited)
                 {
                     nodeCosts.Enqueue(edge.End, costToEnd);
                 }
@@ -83,20 +73,41 @@ internal static class DijkstraAlgorithm
 
         return (end.Data.Cost, GetPath(end));
 
-        static IReadOnlyCollection<Graph<DijkstraData<TNodeData>>.Edge> GetPath(Graph<DijkstraData<TNodeData>>.Node end)
+        static bool UpdateCost(long newCost, Graph<IData<TNodeData>>.Node node, Graph<IData<TNodeData>>.Node? parent)
+        {
+            if (!node.Data.Cost.HasValue || node.Data.Cost > newCost)
+            {
+                node.Data.Cost = newCost;
+                node.Data.Parent = parent;
+                return true;
+            }
+            else
+            {
+                return false;
+            }
+        }
+
+        static void Reset(Graph<IData<TNodeData>>.Node node)
+        {
+            node.Data.Parent = null;
+            node.Data.Visited = false;
+            node.Data.Cost = null;
+        }
+
+        static IReadOnlyCollection<Graph<IData<TNodeData>>.Edge> GetPath(Graph<IData<TNodeData>>.Node end)
         {
             if (end.Data.Cost is null)
             {
-                return Array.Empty<Graph<DijkstraData<TNodeData>>.Edge>();
+                return Array.Empty<Graph<IData<TNodeData>>.Edge>();
             }
 
-            List<Graph<DijkstraData<TNodeData>>.Node> nodePath = new()
+            List<Graph<IData<TNodeData>>.Node> nodePath = new()
             {
                 end,
             };
 
 
-            Graph<DijkstraData<TNodeData>>.Node? current = end.Data.Parent;
+            Graph<IData<TNodeData>>.Node? current = end.Data.Parent;
 
             while (current is not null)
             {
@@ -106,7 +117,7 @@ internal static class DijkstraAlgorithm
 
             nodePath.Reverse();
 
-            List<Graph<DijkstraData<TNodeData>>.Edge> result = new(nodePath.Count - 1);
+            List<Graph<IData<TNodeData>>.Edge> result = new(nodePath.Count - 1);
 
             for (int i = 0; i < nodePath.Count - 1; i++)
             {
