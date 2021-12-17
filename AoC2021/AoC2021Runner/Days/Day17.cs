@@ -1,6 +1,4 @@
-﻿using System.Diagnostics.CodeAnalysis;
-
-namespace AoC2021Runner;
+﻿namespace AoC2021Runner;
 
 internal class Day17 : IDayChallenge
 {
@@ -33,12 +31,12 @@ internal class Day17 : IDayChallenge
         var ySteps = GetSuccessfulYVelocities()
             .GroupBy(y => y.Steps)
             .ToDictionary(
-                x => x.Key, 
+                x => x.Key,
                 x => x.Select(x => x.Velocity).ToArray());
         var xSteps = GetSuccessfulXVelocities(ySteps.Select(y => y.Key).Max())
             .GroupBy(x => x.Steps)
             .ToDictionary(
-                x => x.Key, 
+                x => x.Key,
                 x => x.Select(x => x.Velocity).ToArray());
 
         HashSet<(int xVelocity, int YVelocity)> velocities = new();
@@ -69,7 +67,7 @@ internal class Day17 : IDayChallenge
             int velocity = startVelocity;
             int steps = 0;
 
-            while(xPosition < xRange.end && steps <= maxSteps)
+            while (xPosition < xRange.end && steps <= maxSteps)
             {
                 xPosition += velocity;
                 if (velocity > 0)
@@ -86,7 +84,6 @@ internal class Day17 : IDayChallenge
             }
         }
     }
-
 
     private IEnumerable<(int Velocity, int Steps, int MaxHeight)> GetSuccessfulYVelocities()
     {
