@@ -19,23 +19,18 @@ internal class Day17 : IDayChallenge
     }
 
     public string Part1()
-    {
-        (_, _, var highestPoint) = GetSuccessfulYVelocities().OrderByDescending(x => x.MaxHeight).First();
-
-        return highestPoint.ToString();
-
-    }
+        => GetSuccessfulYVelocities().OrderByDescending(x => x.MaxHeight).First().MaxHeight.ToString();
 
     public string Part2()
         => GetSuccessfulVelocites().Count.ToString();
 
-    private IReadOnlyCollection<(int X, int Y)> GetSuccessfulVelocites()
+    private IReadOnlyCollection<(int X, int Y, int MaxY)> GetSuccessfulVelocites()
     {
         var yVelocitiesByStepCount = GetSuccessfulYVelocities()
             .GroupBy(y => y.Steps)
             .ToDictionary(
                 x => x.Key,
-                x => x.Select(x => x.Velocity).ToArray());
+                x => x.ToArray());
 
         var xVelocitiesByStepCount = GetSuccessfulXVelocities(yVelocitiesByStepCount.Select(y => y.Key).Max())
             .GroupBy(x => x.Steps)
@@ -43,7 +38,7 @@ internal class Day17 : IDayChallenge
                 x => x.Key,
                 x => x.Select(x => x.Velocity).ToArray());
 
-        HashSet<(int X, int Y)> velocities = new();
+        HashSet<(int X, int Y, int MaxY)> velocities = new();
 
         foreach ((var stepCount, var yVelocites) in yVelocitiesByStepCount)
         {
@@ -53,7 +48,7 @@ internal class Day17 : IDayChallenge
                 {
                     foreach (var x in xVelocities)
                     {
-                        velocities.Add((x, y));
+                        velocities.Add((x, y.Velocity, y.MaxHeight));
                     }
                 }
             }
