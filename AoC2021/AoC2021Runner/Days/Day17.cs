@@ -27,34 +27,39 @@ internal class Day17 : IDayChallenge
     }
 
     public string Part2()
+        => GetSuccessfulVelocites().Count.ToString();
+
+    private IReadOnlyCollection<(int X, int Y)> GetSuccessfulVelocites()
     {
-        var ySteps = GetSuccessfulYVelocities()
+        var yVelocitiesByStepCount = GetSuccessfulYVelocities()
             .GroupBy(y => y.Steps)
             .ToDictionary(
                 x => x.Key,
                 x => x.Select(x => x.Velocity).ToArray());
-        var xSteps = GetSuccessfulXVelocities(ySteps.Select(y => y.Key).Max())
+
+        var xVelocitiesByStepCount = GetSuccessfulXVelocities(yVelocitiesByStepCount.Select(y => y.Key).Max())
             .GroupBy(x => x.Steps)
             .ToDictionary(
                 x => x.Key,
                 x => x.Select(x => x.Velocity).ToArray());
 
-        HashSet<(int xVelocity, int YVelocity)> velocities = new();
+        HashSet<(int X, int Y)> velocities = new();
 
-        foreach ((var yStep, var yVelocites) in ySteps)
+        foreach ((var stepCount, var yVelocites) in yVelocitiesByStepCount)
         {
-            if (xSteps.TryGetValue(yStep, out var xVelocities))
+            if (xVelocitiesByStepCount.TryGetValue(stepCount, out var xVelocities))
             {
-                foreach (var yVelocity in yVelocites)
+                foreach (var y in yVelocites)
                 {
-                    foreach (var xVelocity in xVelocities)
+                    foreach (var x in xVelocities)
                     {
-                        velocities.Add((xVelocity, yVelocity));
+                        velocities.Add((x, y));
                     }
                 }
             }
         }
-        return velocities.Count.ToString();
+
+        return velocities;
     }
 
     private IEnumerable<(int Velocity, int Steps)> GetSuccessfulXVelocities(int maxSteps)
