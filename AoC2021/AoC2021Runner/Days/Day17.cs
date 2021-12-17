@@ -40,15 +40,15 @@ internal class Day17 : IDayChallenge
 
         HashSet<(int X, int Y, int MaxY)> velocities = new();
 
-        foreach ((var stepCount, var yVelocites) in yVelocitiesByStepCount)
+        foreach (var (stepCount, yVelocites) in yVelocitiesByStepCount)
         {
             if (xVelocitiesByStepCount.TryGetValue(stepCount, out var xVelocities))
             {
-                foreach (var y in yVelocites)
+                foreach (var (y, _, maxY) in yVelocites)
                 {
                     foreach (var x in xVelocities)
                     {
-                        velocities.Add((x, y.Velocity, y.MaxHeight));
+                        velocities.Add((x, y, maxY));
                     }
                 }
             }
