@@ -1,13 +1,11 @@
-﻿using System.Text;
-using System.Linq;
-using Microsoft.Toolkit.HighPerformance;
+﻿using Microsoft.Toolkit.HighPerformance;
 
 namespace AoC2021Runner;
 
 internal class Day20 : IDayChallenge
 {
     private readonly (bool[] Algorithm, bool[,] InputGrid) inputData;
-    
+
     public Day20(string inputData)
     {
         this.inputData = ParseInput(inputData);
@@ -29,7 +27,7 @@ internal class Day20 : IDayChallenge
         var algorithm = inputLines[0].Select(x => x == '#').ToArray();
 
         // inflate the frid so that we don't have to worry about bits that fall off the edge
-        bool [,] inputGrid = new bool[height + 4, width + 4];
+        bool[,] inputGrid = new bool[height + 4, width + 4];
 
         Span2D<bool> inputSpan = new Span2D<bool>(inputGrid).Slice(2, 2, height, width);
 
@@ -44,6 +42,7 @@ internal class Day20 : IDayChallenge
 
         return (algorithm, inputGrid);
     }
+
     private string Enhance(bool[,] input, int count)
     {
         var current = input;
@@ -68,7 +67,7 @@ internal class Day20 : IDayChallenge
         bool currentInfiniteSpace = input[0, 0];
         bool newInfiniteSpace = currentInfiniteSpace ? this.inputData.Algorithm[^1] : this.inputData.Algorithm[0];
 
-        // set the new two rows to the new infinite value - cheat because our data is square
+        // set the new two rows/columns to the new infinite space value - cheat because our data is square
         for (int i = 0; i < resultSpan.Width; i++)
         {
             resultSpan[0, i] = newInfiniteSpace;
