@@ -20,7 +20,7 @@ internal class Day21 : IDayChallenge
         return $"{losingPlayer.Score * dice.RollCount}";
     }
 
-    private static IReadOnlyList<(int TotalRoll, int Count)> quantumRolls = QuantumRolls();
+    private static readonly IReadOnlyList<(int TotalRoll, int Count)> quantumRolls = QuantumRolls();
 
     public string Part2()
     {
