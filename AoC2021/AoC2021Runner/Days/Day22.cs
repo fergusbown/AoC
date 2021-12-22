@@ -47,19 +47,15 @@ internal class Day22 : IDayChallenge
     {
         public Instruction(string text)
         {
-            var parts = text.Split(new String[] { " x=", "..", ",y=", ",z=" }, StringSplitOptions.None);
+            var parts = text.Split(new string[] { " x=", "..", ",y=", ",z=" }, StringSplitOptions.None);
             TurnOn = parts[0] == "on";
-            var start = (int.Parse(parts[1]), int.Parse(parts[3]), int.Parse(parts[5]));
-            var end = (int.Parse(parts[2]), int.Parse(parts[4]), int.Parse(parts[6]));
+            var numericParts = parts.Skip(1).Select(x => int.Parse(x)).ToArray();
+            
+            var start = (numericParts[0], numericParts[2], numericParts[4]);
+            var end = (numericParts[1], numericParts[3], numericParts[5]);
             this.Region = new Region(start, end);
 
-            this.IsInitialisationSequence =
-                Math.Abs(Region.Start.X) <= 50 &&
-                Math.Abs(Region.Start.Y) <= 50 &&
-                Math.Abs(Region.Start.Z) <= 50 &&
-                Math.Abs(Region.End.X) <= 50 &&
-                Math.Abs(Region.End.Y) <= 50 &&
-                Math.Abs(Region.End.Z) <= 50;
+            this.IsInitialisationSequence = numericParts.All(v => Math.Abs(v) <= 50);
         }
 
         public bool IsInitialisationSequence { get; }
