@@ -123,41 +123,41 @@ internal class Day22 : IDayChallenge
             }
             else
             {
-                (int remainingStartX, int remainingStartY, int remainingStartZ) = Start;
-                (int remainingEndX, int remainingEndY, int remainingEndZ) = End;
+                (int startX, int startY, int startZ) = Start;
+                (int endX, int endY, int endZ) = End;
 
-                if (overlap.Start.X > remainingStartX)
+                if (overlap.Start.X > startX)
                 {
-                    yield return new Region((remainingStartX, remainingStartY, remainingStartZ), (overlap.Start.X - 1, remainingEndY, remainingEndZ));
-                    remainingStartX = overlap.Start.X;
+                    yield return new Region((startX, startY, startZ), (overlap.Start.X - 1, endY, endZ));
+                    startX = overlap.Start.X;
                 }
 
-                if (overlap.End.X < remainingEndX)
+                if (overlap.End.X < endX)
                 {
-                    yield return new Region((overlap.End.X + 1, remainingStartY, remainingStartZ), (remainingEndX, remainingEndY, remainingEndZ));
-                    remainingEndX = overlap.End.X;
+                    yield return new Region((overlap.End.X + 1, startY, startZ), (endX, endY, endZ));
+                    endX = overlap.End.X;
                 }
 
-                if (overlap.Start.Y > remainingStartY)
+                if (overlap.Start.Y > startY)
                 {
-                    yield return new Region((remainingStartX, remainingStartY, remainingStartZ), (remainingEndX, overlap.Start.Y - 1, remainingEndZ));
-                    remainingStartY = overlap.Start.Y;
+                    yield return new Region((startX, startY, startZ), (endX, overlap.Start.Y - 1, endZ));
+                    startY = overlap.Start.Y;
                 }
 
-                if (overlap.End.Y < remainingEndY)
+                if (overlap.End.Y < endY)
                 {
-                    yield return new Region((remainingStartX, overlap.End.Y + 1, remainingStartZ), (remainingEndX, remainingEndY, remainingEndZ));
-                    remainingEndY = overlap.End.Y;
+                    yield return new Region((startX, overlap.End.Y + 1, startZ), (endX, endY, endZ));
+                    endY = overlap.End.Y;
                 }
 
-                if (overlap.Start.Z > remainingStartZ)
+                if (overlap.Start.Z > startZ)
                 {
-                    yield return new Region((remainingStartX, remainingStartY, remainingStartZ), (remainingEndX, remainingEndY, overlap.Start.Z - 1));
+                    yield return new Region((startX, startY, startZ), (endX, endY, overlap.Start.Z - 1));
                 }
 
-                if (overlap.End.Z < remainingEndZ)
+                if (overlap.End.Z < endZ)
                 {
-                    yield return new Region((remainingStartX, remainingStartY, overlap.End.Z + 1), (remainingEndX, remainingEndY, remainingEndZ));
+                    yield return new Region((startX, startY, overlap.End.Z + 1), (endX, endY, endZ));
                 }
             }
         }
