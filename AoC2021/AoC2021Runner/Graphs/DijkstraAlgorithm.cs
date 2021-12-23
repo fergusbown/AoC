@@ -9,7 +9,7 @@ internal static class DijkstraAlgorithm
 {
     public interface IData<TNodeData>
     {
-        TNodeData NodeData { get; }
+        TNodeData NodeData { get; set; }
 
         bool Visited { get; set; }
 
@@ -25,7 +25,7 @@ internal static class DijkstraAlgorithm
             NodeData = data;
         }
 
-        public TNodeData NodeData { get; }
+        public TNodeData NodeData { get; set; }
 
         public bool Visited { get; set; }
 
@@ -40,7 +40,8 @@ internal static class DijkstraAlgorithm
     public static (long? Cost, IReadOnlyCollection<Graph<IData<TNodeData>>.Edge>) FindShortestPath<TNodeData>(
         Graph<IData<TNodeData>> graph,
         Graph<IData<TNodeData>>.Node start, 
-        Graph<IData<TNodeData>>.Node end)
+        Graph<IData<TNodeData>>.Node end,
+        Func<Graph<IData<TNodeData>>.Edge, bool> canTraverse)
     {
         foreach(var node in graph.Nodes)
         {
@@ -59,7 +60,7 @@ internal static class DijkstraAlgorithm
                 continue;
             }
 
-            foreach (var edge in node.Edges.Where(e => !e.End.Data.Visited))
+            foreach (var edge in node.Edges.Where(e => !e.End.Data.Visited && canTraverse(e)))
             {
                 var travelTo = edge.End;
                 var costToEnd = node.Data.Cost!.Value + edge.Weight;

@@ -24,7 +24,7 @@ internal class Day15 : IDayChallenge
     {
         Span2D<int> input = new(inputArray);
         (var inputGraph, var startNode, var endNode) = BuildInputGraph(input, inflateBy);
-        (var cost, _) = DijkstraAlgorithm.FindShortestPath(inputGraph, startNode, endNode);
+        (var cost, _) = DijkstraAlgorithm.FindShortestPath(inputGraph, startNode, endNode, e => true);
         return cost!.Value.ToString();
     }
 

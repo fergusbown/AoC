@@ -4,7 +4,7 @@ internal class Graph<TNodeData>
 {
     private readonly List<Node> nodes = new();
 
-    public IReadOnlyCollection<Node> Nodes => nodes;
+    public IReadOnlyList<Node> Nodes => nodes;
 
     public Node AddNode(TNodeData nodeData)
     {
@@ -29,6 +29,12 @@ internal class Graph<TNodeData>
         public void AddEdgeTo(Node end, int weight)
         {
             this.edges.Add(new Edge(this, end, weight));
+        }
+
+        public void AddEdgesBetween(Node other, int weight)
+        {
+            this.AddEdgeTo(other, weight);
+            other.AddEdgeTo(this, weight);
         }
     }
 
