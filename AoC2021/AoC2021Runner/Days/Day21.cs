@@ -21,6 +21,8 @@ internal class Day21 : IDayChallenge
     }
 
     private static readonly IReadOnlyList<(int TotalRoll, int Count)> quantumRolls = QuantumRolls();
+    private static readonly Dictionary<(int player1Position, long player1Score, int player2Position, long player2Score, bool player1sGo), (long player1Wins, long player2Wins)>
+        previousPlays = new();
 
     public string Part2()
     {
@@ -30,6 +32,11 @@ internal class Day21 : IDayChallenge
 
         static (long player1Wins, long player2Wins) Play(int player1Position, long player1Score, int player2Position, long player2Score, bool player1sGo)
         {
+            if (previousPlays.TryGetValue((player1Position, player1Score, player2Position, player2Score, player1sGo), out var result))
+            {
+                return result;
+            }
+
             long player1Wins = 0;
             long player2Wins = 0;
             foreach (var (roll, count) in quantumRolls)
@@ -39,6 +46,7 @@ internal class Day21 : IDayChallenge
                 player2Wins += newP2Wins * count;
             }
 
+            previousPlays[(player1Position, player1Score, player2Position, player2Score, player1sGo)] = (player1Wins, player2Wins);
             return (player1Wins, player2Wins);
         }
 
