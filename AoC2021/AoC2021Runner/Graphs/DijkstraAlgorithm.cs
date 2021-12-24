@@ -34,16 +34,25 @@ internal static class DijkstraAlgorithm
         public long? Cost { get; set; }
     }
 
-    /// <summary>
-    /// Find the shortest route through a graph whose data is specialised to support the algorithm
-    /// </summary>
-    public static (long? Cost, IReadOnlyCollection<Graph<IData<TNodeData>>.Edge>) FindShortestPath<TNodeData>(
+    public static (long? Cost, IReadOnlyCollection<Graph<IData<TNodeData>>.Edge> Route) FindShortestPath<TNodeData>(
         Graph<IData<TNodeData>> graph,
-        Graph<IData<TNodeData>>.Node start, 
+        Graph<IData<TNodeData>>.Node start,
         Graph<IData<TNodeData>>.Node end,
         Func<Graph<IData<TNodeData>>.Edge, bool> canTraverse)
     {
-        foreach(var node in graph.Nodes)
+        FindShortestPathsFrom(graph, start, canTraverse);
+        return ReportShortestPathTo(end);
+    }
+
+    /// <summary>
+    /// Find the shortest route through a graph whose data is specialised to support the algorithm
+    /// </summary>
+    public static void FindShortestPathsFrom<TNodeData>(
+        Graph<IData<TNodeData>> graph,
+        Graph<IData<TNodeData>>.Node start,
+        Func<Graph<IData<TNodeData>>.Edge, bool> canTraverse)
+    {
+        foreach (var node in graph.Nodes)
         {
             Reset(node);
         }
@@ -53,7 +62,7 @@ internal static class DijkstraAlgorithm
         UpdateCost(0, start, null);
         nodeCosts.Enqueue(start, 0);
 
-        while(nodeCosts.TryDequeue(out var node, out _))
+        while (nodeCosts.TryDequeue(out var node, out _))
         {
             if (node.Data.Visited)
             {
@@ -71,8 +80,6 @@ internal static class DijkstraAlgorithm
                 }
             }
         }
-
-        return (end.Data.Cost, GetPath(end));
 
         static bool UpdateCost(long newCost, Graph<IData<TNodeData>>.Node node, Graph<IData<TNodeData>>.Node? parent)
         {
@@ -94,6 +101,15 @@ internal static class DijkstraAlgorithm
             node.Data.Visited = false;
             node.Data.Cost = null;
         }
+    }
+
+    /// <summary>
+    /// Find the shortest route through a graph whose data is specialised to support the algorithm
+    /// </summary>
+    public static (long? Cost, IReadOnlyCollection<Graph<IData<TNodeData>>.Edge> Route) ReportShortestPathTo<TNodeData>(
+        Graph<IData<TNodeData>>.Node end)
+    {
+        return (end.Data.Cost, GetPath(end));
 
         static IReadOnlyCollection<Graph<IData<TNodeData>>.Edge> GetPath(Graph<IData<TNodeData>>.Node end)
         {

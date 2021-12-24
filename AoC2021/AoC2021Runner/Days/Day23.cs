@@ -41,7 +41,7 @@ internal class Day23 : IDayChallenge
     {
         Graph<DijkstraAlgorithm.IData<Burrow>> journeys = new();
         Dictionary<Burrow, Graph<DijkstraAlgorithm.IData<Burrow>>.Node> burrowToNodes = new();
-        Graph<DijkstraAlgorithm.IData<AmphipodType>> burrowGraph = BuildEmptyBurrow(startBurrow.RoomSize, out var rooms);
+        Graph<DijkstraAlgorithm.IData<AmphipodType>> burrowGraph = BuildEmptyBurrow(startBurrow.RoomSize, out var rooms, out var routes);
 
         var startNode = burrowToNodes[startBurrow] = journeys.AddNode(new DijkstraAlgorithm.Data<Burrow>(startBurrow));
         var endNode = burrowToNodes[endBurrow] = journeys.AddNode(new DijkstraAlgorithm.Data<Burrow>(endBurrow));
@@ -56,31 +56,28 @@ internal class Day23 : IDayChallenge
 
             foreach ((var start, var end) in ValidJourneys(rooms))
             {
-                (var cost, var journey) = DijkstraAlgorithm.FindShortestPath(
-                    burrowGraph,
-                    start,
-                    end,
-                    e => e.End.Data.NodeData == AmphipodType.None);
-
-                if (cost is not null)
+                var route = routes[(start, end)];
+                if (route.Skip(1).Any(n => n.Data.NodeData != AmphipodType.None))
                 {
-                    AmphipodType moving = start.Data.NodeData;
-                    start.Data.NodeData = AmphipodType.None;
-                    end.Data.NodeData = moving;
-
-                    var newBurrow = new Burrow(burrowGraph);
-
-                    start.Data.NodeData = moving;
-                    end.Data.NodeData = AmphipodType.None;
-
-                    if (!burrowToNodes.TryGetValue(newBurrow, out var node))
-                    {
-                        node = burrowToNodes[newBurrow] = journeys.AddNode(new DijkstraAlgorithm.Data<Burrow>(newBurrow));
-                        pendingBurrows.Push(newBurrow);
-                    }
-
-                    burrowNode.AddEdgeTo(node, (int)moving * journey.Count);
+                    continue;
                 }
+
+                AmphipodType moving = start.Data.NodeData;
+                start.Data.NodeData = AmphipodType.None;
+                end.Data.NodeData = moving;
+
+                var newBurrow = new Burrow(burrowGraph);
+
+                start.Data.NodeData = moving;
+                end.Data.NodeData = AmphipodType.None;
+
+                if (!burrowToNodes.TryGetValue(newBurrow, out var node))
+                {
+                    node = burrowToNodes[newBurrow] = journeys.AddNode(new DijkstraAlgorithm.Data<Burrow>(newBurrow));
+                    pendingBurrows.Push(newBurrow);
+                }
+
+                burrowNode.AddEdgeTo(node, (int)moving * (route.Count - 1));
             }
         }
 
@@ -131,7 +128,8 @@ internal class Day23 : IDayChallenge
 
     private static Graph<DijkstraAlgorithm.IData<AmphipodType>> BuildEmptyBurrow(
         int roomSize,
-        out Dictionary<AmphipodType, IReadOnlyList<Graph<DijkstraAlgorithm.IData<AmphipodType>>.Node>> rooms)
+        out Dictionary<AmphipodType, IReadOnlyList<Graph<DijkstraAlgorithm.IData<AmphipodType>>.Node>> rooms,
+        out Dictionary<(Graph<DijkstraAlgorithm.IData<AmphipodType>>.Node, Graph<DijkstraAlgorithm.IData<AmphipodType>>.Node), IReadOnlyCollection<Graph<DijkstraAlgorithm.IData<AmphipodType>>.Node>> routes)
     {
         /*
 
@@ -201,6 +199,22 @@ internal class Day23 : IDayChallenge
             { AmphipodType.None, hallway }
         };
 
+       routes = new();
+
+        foreach(var hallspace in hallway)
+        {
+            DijkstraAlgorithm.FindShortestPathsFrom(graph, hallspace, e => true);
+
+            foreach (var roomspace in amberRoom.Concat(bronzeRoom).Concat(copperRoom).Concat(desertRoom))
+            {
+                var route = DijkstraAlgorithm.ReportShortestPathTo(roomspace).Route.Select(r => r.End).ToList();
+                route.Insert(0, hallspace);
+                routes.Add((hallspace, roomspace), route.ToArray());
+                route.Reverse();
+                routes.Add((roomspace, hallspace), route);
+            }
+        }
+
         return graph;
     }
 
@@ -230,7 +244,7 @@ internal class Day23 : IDayChallenge
         var hallwayDestinations = rooms[AmphipodType.None]
             .Where(d => d.Data.NodeData == AmphipodType.None).ToArray();
 
-        foreach ((var correctOccupancy, var room) in rooms)
+        foreach ((var correctOccupancy, var room) in rooms.Where(r => r.Key != AmphipodType.None))
         {
             if (TryGetRoomDeparture(correctOccupancy, room, out var departure))
             {
