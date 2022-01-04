@@ -17,6 +17,7 @@ static IEnumerable<(int Day, IDayChallenge Solution)> GetSolutions()
         .GetExecutingAssembly()
         .GetTypes()
         .Where(t => t.IsAssignableTo(typeof(IDayChallenge)) && t.IsClass)
+        .Where(t => t.Name == "Day24")
         .Select(t =>
         {
             string inputData = InputData.InputForDay(t);
