@@ -3,39 +3,58 @@
 internal class Day24 : IDayChallenge
 {
     private readonly IReadOnlyList<IAluDigit> alus;
+    private string lowest = string.Empty;
+    private string highest = string.Empty;
+
     public Day24(string inputData)
     {
-        this.alus = new List<IAluDigit>()
+        var inputLines = inputData.StringsForDay();
+        var loadedAlus = new List<IAluDigit>();
+        
+        for (int startIndex = 0; startIndex < inputLines.Length; startIndex+=18)
         {
-            new AluDigitNonTruncating(11, 6),
-            new AluDigitNonTruncating(11, 14),
-            new AluDigitNonTruncating(15, 13),
-            new AluDigitTruncating(-14, 1),
-            new AluDigitNonTruncating(10, 6),
-            new AluDigitTruncating(0, 13),
-            new AluDigitTruncating(-6, 6),
-            new AluDigitNonTruncating(13, 3),
-            new AluDigitTruncating(-3, 8),
-            new AluDigitNonTruncating(13, 3),
-            new AluDigitNonTruncating(15, 4),
-            new AluDigitTruncating(-2, 7),
-            new AluDigitTruncating(-9, 15),
-            new AluDigitTruncating(-2, 1),
-        };
+            bool truncate = inputLines[startIndex + 4] == "div z 26";
+            int xModifier = int.Parse(inputLines[startIndex + 5][6..]);
+            int yModifier = int.Parse(inputLines[startIndex + 15][6..]);
+
+            if (truncate)
+            {
+                loadedAlus.Add(new AluDigitTruncating(xModifier, yModifier));
+            }
+            else
+            {
+                loadedAlus.Add(new AluDigitNonTruncating(xModifier, yModifier));
+            }
+        }
+
+        this.alus = loadedAlus;
     }
 
     public string Part1()
     {
+        Solve();
+        return highest;
+    }
+
+    public string Part2()
+        => lowest;
+
+    private void Solve()
+    {
         Dictionary<int, HashSet<long>> zsForDigit = new();
         zsForDigit.Add(0, new HashSet<long> { 0, });
 
-        for (int digit = 0; digit < 14; digit++)
+        Console.WriteLine($"Working out all input states:");
+
+        for (int digit = 0; digit < 13; digit++)
         {
             IAluDigit alu = alus[digit];
             HashSet<long> nextZs = new();
             zsForDigit[digit + 1] = nextZs;
 
-            foreach(var z in zsForDigit[digit])
+            Console.WriteLine($"  Handling {zsForDigit[digit].Count} input states for digit {digit}");
+
+            foreach (var z in zsForDigit[digit])
             {
                 for (int input = 1; input <= 9; input++)
                 {
@@ -43,11 +62,106 @@ internal class Day24 : IDayChallenge
                 }
             }
         }
-        return "";
+
+        Console.WriteLine($"Working out valid output states:");
+
+        Dictionary<int, HashSet<long>> endZsForDigit = new();
+        endZsForDigit.Add(13, new HashSet<long> { 0 });
+
+        for (int digit = 13; digit > 0; digit--)
+        {
+            IAluDigit alu = alus[digit];
+            HashSet<long> previousZs = new();
+            endZsForDigit[digit - 1] = previousZs;
+            var endZs = endZsForDigit[digit];
+
+            Console.WriteLine($"  Handling {zsForDigit[digit].Count} input states for digit {digit}");
+
+            foreach (var z in zsForDigit[digit])
+            {
+                for (int input = 1; input <= 9; input++)
+                {
+                    if (endZs.Contains(alu.Calculate(z, input)))
+                    {
+                        previousZs.Add(z);
+                    }
+                }
+            }
+        }
+
+        Console.WriteLine($"Working out highest:");
+
+        List<int> result = new();
+        Dictionary<int, HashSet<long>> validatedZsForDigit = new();
+        validatedZsForDigit.Add(0, new HashSet<long> { 0, });
+
+        for (int digit = 0; digit < 14; digit++)
+        {
+            IAluDigit alu = alus[digit];
+            HashSet<long> nextZs = new();
+            validatedZsForDigit[digit + 1] = nextZs;
+            var endZs = endZsForDigit[digit];
+
+            Console.WriteLine($"  Handling {validatedZsForDigit[digit].Count} input states for digit {digit}");
+
+            for (int input = 9; input >= 1; input--)
+            {
+                foreach (var z in validatedZsForDigit[digit])
+                {
+                    var newZ = alu.Calculate(z, input);
+                    if (endZs.Contains(newZ))
+                    {
+                        nextZs.Add(newZ);
+                    }
+                }
+
+                if (nextZs.Count > 0)
+                {
+                    result.Add(input);
+                    break;
+                }
+            }
+        }
+
+        this.highest = String.Join("", result);
+
+        Console.WriteLine($"Working out lowest:");
+
+        result = new();
+        validatedZsForDigit = new();
+        validatedZsForDigit.Add(0, new HashSet<long> { 0, });
+
+        for (int digit = 0; digit < 14; digit++)
+        {
+            IAluDigit alu = alus[digit];
+            HashSet<long> nextZs = new();
+            validatedZsForDigit[digit + 1] = nextZs;
+            var endZs = endZsForDigit[digit];
+
+            Console.WriteLine($"  Handling {validatedZsForDigit[digit].Count} input states for digit {digit}");
+
+            for (int input = 1; input <= 9; input++)
+            {
+                foreach (var z in validatedZsForDigit[digit])
+                {
+                    var newZ = alu.Calculate(z, input);
+                    if (endZs.Contains(newZ))
+                    {
+                        nextZs.Add(newZ);
+                    }
+                }
+
+                if (nextZs.Count > 0)
+                {
+                    result.Add(input);
+                    break;
+                }
+            }
+        }
+
+        this.lowest = String.Join("", result);
     }
 
-    public string Part2()
-        => "";
 
     private interface IAluDigit
     {
