@@ -41,8 +41,8 @@ internal class Day24 : IDayChallenge
 
     private void Solve()
     {
-        Dictionary<int, HashSet<long>> zsForDigit = new();
-        zsForDigit.Add(0, new HashSet<long> { 0, });
+        HashSet<long>[] zsForDigit = new HashSet<long>[14];
+        zsForDigit[0] = new HashSet<long> { 0 };
 
         Console.WriteLine($"Working out all input states:");
 
@@ -65,8 +65,8 @@ internal class Day24 : IDayChallenge
 
         Console.WriteLine($"Working out valid output states:");
 
-        Dictionary<int, HashSet<long>> endZsForDigit = new();
-        endZsForDigit.Add(13, new HashSet<long> { 0 });
+        HashSet<long>[] endZsForDigit = new HashSet<long>[14];
+        endZsForDigit[13] = new HashSet<long> { 0 };
 
         for (int digit = 13; digit > 0; digit--)
         {
@@ -92,8 +92,8 @@ internal class Day24 : IDayChallenge
         Console.WriteLine($"Working out highest:");
 
         List<int> result = new();
-        Dictionary<int, HashSet<long>> validatedZsForDigit = new();
-        validatedZsForDigit.Add(0, new HashSet<long> { 0, });
+        HashSet<long>[] validatedZsForDigit = new HashSet<long>[15];
+        validatedZsForDigit[0] = new HashSet<long> { 0, };
 
         for (int digit = 0; digit < 14; digit++)
         {
@@ -128,8 +128,8 @@ internal class Day24 : IDayChallenge
         Console.WriteLine($"Working out lowest:");
 
         result = new();
-        validatedZsForDigit = new();
-        validatedZsForDigit.Add(0, new HashSet<long> { 0, });
+        validatedZsForDigit = new HashSet<long>[15];
+        validatedZsForDigit[0] = new HashSet<long> { 0, };
 
         for (int digit = 0; digit < 14; digit++)
         {
