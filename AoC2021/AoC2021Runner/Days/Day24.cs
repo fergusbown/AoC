@@ -89,8 +89,6 @@ internal class Day24 : IDayChallenge
             }
         }
 
-        Console.WriteLine($"Working out highest:");
-
         List<int> result = new();
         HashSet<long>[] validatedZsForDigit = new HashSet<long>[15];
         validatedZsForDigit[0] = new HashSet<long> { 0, };
@@ -101,8 +99,6 @@ internal class Day24 : IDayChallenge
             HashSet<long> nextZs = new();
             validatedZsForDigit[digit + 1] = nextZs;
             var endZs = endZsForDigit[digit];
-
-            Console.WriteLine($"  Handling {validatedZsForDigit[digit].Count} input states for digit {digit}");
 
             for (int input = 9; input >= 1; input--)
             {
@@ -125,8 +121,6 @@ internal class Day24 : IDayChallenge
 
         this.highest = String.Join("", result);
 
-        Console.WriteLine($"Working out lowest:");
-
         result = new();
         validatedZsForDigit = new HashSet<long>[15];
         validatedZsForDigit[0] = new HashSet<long> { 0, };
@@ -137,8 +131,6 @@ internal class Day24 : IDayChallenge
             HashSet<long> nextZs = new();
             validatedZsForDigit[digit + 1] = nextZs;
             var endZs = endZsForDigit[digit];
-
-            Console.WriteLine($"  Handling {validatedZsForDigit[digit].Count} input states for digit {digit}");
 
             for (int input = 1; input <= 9; input++)
             {
