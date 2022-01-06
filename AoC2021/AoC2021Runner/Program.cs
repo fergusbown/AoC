@@ -2,7 +2,7 @@
 using System.Reflection;
 using AoC2021Runner;
 
-var daySolutions = TimeOperation(GetSolutions, (s, t) => $"Initialised{t}");
+var daySolutions = TimeOperation(() => GetSolutions(args), (s, t) => $"Initialised{t}");
 
 foreach ((int year, int day, IDayChallenge solution) in daySolutions)
 {
@@ -11,7 +11,7 @@ foreach ((int year, int day, IDayChallenge solution) in daySolutions)
     _ = TimeOperation(solution.Part2, (s, t) => $"  Part 2{t}: {s}");
 }
 
-static IEnumerable<(int year, int Day, IDayChallenge Solution)> GetSolutions()
+static IEnumerable<(int year, int Day, IDayChallenge Solution)> GetSolutions(string[] args)
 {
     return Assembly
         .GetExecutingAssembly()
@@ -19,11 +19,17 @@ static IEnumerable<(int year, int Day, IDayChallenge Solution)> GetSolutions()
         .Where(t => t.IsAssignableTo(typeof(IDayChallenge)) && t.IsClass)
         .Select(t =>
         {
-            string inputData = InputData.InputForDay(t);
-            return (int.Parse(t.Name[4..8]), int.Parse(t.Name[9..]), (IDayChallenge)Activator.CreateInstance(t, inputData)!);
+            (int year, int day, Type type) result = (int.Parse(t.Name[4..8]), int.Parse(t.Name[9..]), t);
+            return result;
         })
-        .OrderBy(t => t.Item1)
-        .ThenBy(t => t.Item2)
+        .Select(t =>
+        {
+            string inputData = InputData.InputForDay(t.type);
+            (int year, int day, IDayChallenge solution) result = (t.year, t.day, (IDayChallenge)Activator.CreateInstance(t.type, inputData)!);
+            return result;
+        })
+        .OrderBy(t => t.year)
+        .ThenBy(t => t.day)
         .ToList();
 }
 
