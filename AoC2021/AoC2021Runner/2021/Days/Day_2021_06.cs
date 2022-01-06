@@ -2,11 +2,11 @@
 
 namespace AoC2021Runner;
 
-internal class Day06 : IDayChallenge
+internal class Day_2021_06 : IDayChallenge
 {
     private readonly IReadOnlyCollection<int> initialState;
 
-    public Day06(string inputData)
+    public Day_2021_06(string inputData)
     {
         this.initialState = inputData.Split(',').Select(v => int.Parse(v)).ToArray();
     }

@@ -3,11 +3,11 @@ using System.Text;
 
 namespace AoC2021Runner;
 
-internal class Day23 : IDayChallenge
+internal class Day_2021_23 : IDayChallenge
 {
     private readonly string inputData;
 
-    public Day23(string inputData)
+    public Day_2021_23(string inputData)
     {
         this.inputData = inputData;
     }

@@ -2,11 +2,11 @@
 
 namespace AoC2021Runner;
 
-internal class Day03 : IDayChallenge
+internal class Day_2021_03 : IDayChallenge
 {
     private readonly (HashSet<string> Ones, HashSet<string> Zeros)[] buckets;
 
-    public Day03(string inputData)
+    public Day_2021_03(string inputData)
     {
         this.buckets = BucketInput(inputData);
     }

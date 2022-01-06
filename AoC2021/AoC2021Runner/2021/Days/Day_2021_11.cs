@@ -3,11 +3,11 @@ using Microsoft.Toolkit.HighPerformance;
 
 namespace AoC2021Runner;
 
-internal class Day11 : IDayChallenge
+internal class Day_2021_11 : IDayChallenge
 {
     private readonly int[] initialLevels;
 
-    public Day11(string inputData)
+    public Day_2021_11(string inputData)
     {
         this.initialLevels = inputData
             .Replace(Environment.NewLine, string.Empty)

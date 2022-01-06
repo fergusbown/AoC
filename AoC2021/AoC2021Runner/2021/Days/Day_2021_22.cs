@@ -2,11 +2,11 @@
 
 namespace AoC2021Runner;
 
-internal class Day22 : IDayChallenge
+internal class Day_2021_22 : IDayChallenge
 {
     private readonly IReadOnlyList<Instruction> instructions;
 
-    public Day22(string inputData)
+    public Day_2021_22(string inputData)
     {
         instructions = ParseInput(inputData);
     }

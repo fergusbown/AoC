@@ -1,11 +1,11 @@
 ﻿using System.Diagnostics.CodeAnalysis;
 
 namespace AoC2021Runner;
-internal class Day16 : IDayChallenge
+internal class Day_2021_16 : IDayChallenge
 {
     private readonly bool[] inputData;
 
-    public Day16(string inputData)
+    public Day_2021_16(string inputData)
     {
         this.inputData = GetInput(inputData);
     }

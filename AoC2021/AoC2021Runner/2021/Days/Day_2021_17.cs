@@ -1,11 +1,11 @@
 ﻿namespace AoC2021Runner;
 
-internal class Day17 : IDayChallenge
+internal class Day_2021_17 : IDayChallenge
 {
     private readonly (int start, int end) xRange;
     private readonly (int start, int end) yRange;
 
-    public Day17(string inputData)
+    public Day_2021_17(string inputData)
     {
         var targetPoints = inputData
             .Replace("target area: x=", "")

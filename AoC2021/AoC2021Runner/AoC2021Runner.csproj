@@ -12,8 +12,8 @@
   </ItemGroup>
   
   <ItemGroup>
-    <None Remove="Inputs\*.txt" />
-    <EmbeddedResource Include="Inputs\*.txt" />
+    <None Remove="*\Inputs\*.txt" />
+    <EmbeddedResource Include="*\Inputs\*.txt" />
   </ItemGroup>
 
 </Project>

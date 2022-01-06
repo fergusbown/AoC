@@ -1,10 +1,10 @@
 ﻿namespace AoC2021Runner;
 
-internal class Day02 : IDayChallenge
+internal class Day_2021_02 : IDayChallenge
 {
     private readonly (Instruction, int)[] instructions;
 
-    public Day02(string inputData)
+    public Day_2021_02(string inputData)
     {
         this.instructions = inputData.InstructionsForDay<Instruction>();
     }

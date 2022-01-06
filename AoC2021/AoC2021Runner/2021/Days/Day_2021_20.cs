@@ -2,11 +2,11 @@
 
 namespace AoC2021Runner;
 
-internal class Day20 : IDayChallenge
+internal class Day_2021_20 : IDayChallenge
 {
     private readonly (bool[] Algorithm, bool[,] InputGrid) inputData;
 
-    public Day20(string inputData)
+    public Day_2021_20(string inputData)
     {
         this.inputData = ParseInput(inputData);
     }

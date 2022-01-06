@@ -1,10 +1,10 @@
 ﻿namespace AoC2021Runner;
 
-internal class Day07 : IDayChallenge
+internal class Day_2021_07 : IDayChallenge
 {
     private readonly int[] positions;
 
-    public Day07(string inputData)
+    public Day_2021_07(string inputData)
     {
         this.positions = inputData.Split(',').Select(p => int.Parse(p)).ToArray();
     }

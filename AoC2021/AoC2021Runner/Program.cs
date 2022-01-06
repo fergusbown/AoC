@@ -4,14 +4,14 @@ using AoC2021Runner;
 
 var daySolutions = TimeOperation(GetSolutions, (s, t) => $"Initialised{t}");
 
-foreach ((int day, IDayChallenge solution) in daySolutions)
+foreach ((int year, int day, IDayChallenge solution) in daySolutions)
 {
-    Console.WriteLine($"Day {day}...");
+    Console.WriteLine($"{year} day {day}...");
     _ = TimeOperation(solution.Part1, (s, t) => $"  Part 1{t}: {s}");
     _ = TimeOperation(solution.Part2, (s, t) => $"  Part 2{t}: {s}");
 }
 
-static IEnumerable<(int Day, IDayChallenge Solution)> GetSolutions()
+static IEnumerable<(int year, int Day, IDayChallenge Solution)> GetSolutions()
 {
     return Assembly
         .GetExecutingAssembly()
@@ -20,9 +20,10 @@ static IEnumerable<(int Day, IDayChallenge Solution)> GetSolutions()
         .Select(t =>
         {
             string inputData = InputData.InputForDay(t);
-            return (int.Parse(t.Name.Replace("Day", "")), (IDayChallenge)Activator.CreateInstance(t, inputData)!);
+            return (int.Parse(t.Name[4..8]), int.Parse(t.Name[9..]), (IDayChallenge)Activator.CreateInstance(t, inputData)!);
         })
         .OrderBy(t => t.Item1)
+        .ThenBy(t => t.Item2)
         .ToList();
 }
 

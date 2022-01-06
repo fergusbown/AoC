@@ -1,12 +1,12 @@
 ﻿namespace AoC2021Runner;
 
-internal class Day24 : IDayChallenge
+internal class Day_2021_24 : IDayChallenge
 {
     private readonly IReadOnlyList<IAluDigit> alus;
     private string lowest = string.Empty;
     private string highest = string.Empty;
 
-    public Day24(string inputData)
+    public Day_2021_24(string inputData)
     {
         var inputLines = inputData.StringsForDay();
         var loadedAlus = new List<IAluDigit>();

@@ -1,10 +1,10 @@
 ﻿namespace AoC2021Runner;
 
-internal class Day19 : IDayChallenge
+internal class Day_2021_19 : IDayChallenge
 {
     private readonly IReadOnlyList<Scanner> inputData;
 
-    public Day19(string inputData)
+    public Day_2021_19(string inputData)
     {
         this.inputData = ParseInput(inputData);
     }

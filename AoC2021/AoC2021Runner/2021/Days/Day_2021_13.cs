@@ -3,12 +3,12 @@ using Microsoft.Toolkit.HighPerformance;
 
 namespace AoC2021Runner;
 
-internal class Day13 : IDayChallenge
+internal class Day_2021_13 : IDayChallenge
 {
     private readonly bool[,] inputPaper;
     private readonly IReadOnlyCollection<(char Axis, int Position)> folds;
 
-    public Day13(string inputData)
+    public Day_2021_13(string inputData)
     {
         this.inputPaper = GetPaper(inputData, out folds).ToArray();
     }

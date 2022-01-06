@@ -3,11 +3,11 @@ using Microsoft.Toolkit.HighPerformance;
 
 namespace AoC2021Runner;
 
-internal class Day05 : IDayChallenge
+internal class Day_2021_05 : IDayChallenge
 {
     private readonly IReadOnlyCollection<(Point Start, Point End)> input;
 
-    public Day05(string inputData)
+    public Day_2021_05(string inputData)
     {
         this.input = GetInput(inputData);
     }

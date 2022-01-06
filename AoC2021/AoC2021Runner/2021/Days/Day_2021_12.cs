@@ -1,10 +1,10 @@
 ﻿namespace AoC2021Runner;
 
-internal class Day12 : IDayChallenge
+internal class Day_2021_12 : IDayChallenge
 {
     private readonly Caves caves;
 
-    public Day12(string inputData)
+    public Day_2021_12(string inputData)
     {
         this.caves = new Caves(inputData);
     }

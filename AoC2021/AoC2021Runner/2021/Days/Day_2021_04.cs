@@ -3,12 +3,12 @@ using Microsoft.Toolkit.HighPerformance.Enumerables;
 
 namespace AoC2021Runner;
 
-internal class Day04 : IDayChallenge
+internal class Day_2021_04 : IDayChallenge
 {
     private readonly IReadOnlyCollection<int> calls;
     private readonly IReadOnlyList<Board> boards;
 
-    public Day04(string inputData)
+    public Day_2021_04(string inputData)
     {
         var (calls, boards) = GetInput(inputData);
         this.calls = calls;

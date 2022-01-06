@@ -2,11 +2,11 @@
 
 namespace AoC2021Runner;
 
-internal class Day09 : IDayChallenge
+internal class Day_2021_09 : IDayChallenge
 {
     private readonly int[,] inputArray;
 
-    public Day09(string inputData)
+    public Day_2021_09(string inputData)
     {
         this.inputArray = GetInputData(inputData).ToArray();
     }

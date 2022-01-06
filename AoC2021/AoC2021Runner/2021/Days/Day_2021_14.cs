@@ -1,8 +1,8 @@
 ﻿namespace AoC2021Runner;
-internal class Day14 : IDayChallenge
+internal class Day_2021_14 : IDayChallenge
 {
     private readonly Polymer startingPolymer;
-    public Day14(string inputData)
+    public Day_2021_14(string inputData)
     {
         this.startingPolymer = new Polymer(inputData);
     }

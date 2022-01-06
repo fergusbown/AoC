@@ -5,11 +5,11 @@ namespace AoC2021Runner;
 
 using IntGraph = Graph<DijkstraAlgorithm.IData<int>>;
 
-internal class Day15 : IDayChallenge
+internal class Day_2021_15 : IDayChallenge
 {
     private readonly int[,] inputArray;
 
-    public Day15(string inputData)
+    public Day_2021_15(string inputData)
     {
         this.inputArray = GetInputData(inputData).ToArray();
     }

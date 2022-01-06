@@ -3,11 +3,11 @@ using System.Text;
 
 namespace AoC2021Runner;
 
-internal class Day25 : IDayChallenge
+internal class Day_2021_25 : IDayChallenge
 {
     private readonly SeaCucumbers inputData;
 
-    public Day25(string inputData)
+    public Day_2021_25(string inputData)
     {
         this.inputData = ParseInput(inputData);
     }
@@ -29,7 +29,7 @@ internal class Day25 : IDayChallenge
         return steps.ToString();
     }
     public string Part2()
-        => "";
+        => "Happy Christmas!";
 
     private class SeaCucumbers
     {
