@@ -26,7 +26,7 @@ internal class Day_2020_03 : IDayChallenge
     }
 
     public string Part1()
-        => TreesHit(3, 11).ToString();
+        => TreesHit(3, 1).ToString();
 
     public string Part2()
     {
