@@ -1,5 +1,4 @@
 ﻿using System.Diagnostics.CodeAnalysis;
-using System.Text;
 
 namespace AoC2021Runner;
 
@@ -199,9 +198,9 @@ internal class Day_2021_23 : IDayChallenge
             { AmphipodType.None, hallway }
         };
 
-       routes = new();
+        routes = new();
 
-        foreach(var hallspace in hallway)
+        foreach (var hallspace in hallway)
         {
             DijkstraAlgorithm.FindShortestPathsFrom(graph, hallspace, e => true);
 

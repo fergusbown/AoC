@@ -1,6 +1,4 @@
-﻿using System.Diagnostics.CodeAnalysis;
-
-namespace AoC2021Runner;
+﻿namespace AoC2021Runner;
 
 internal class Day_2021_22 : IDayChallenge
 {
@@ -50,7 +48,7 @@ internal class Day_2021_22 : IDayChallenge
             var parts = text.Split(new string[] { " x=", "..", ",y=", ",z=" }, StringSplitOptions.None);
             TurnOn = parts[0] == "on";
             var numericParts = parts.Skip(1).Select(x => int.Parse(x)).ToArray();
-            
+
             var start = (numericParts[0], numericParts[2], numericParts[4]);
             var end = (numericParts[1], numericParts[3], numericParts[5]);
             this.Region = new Region(start, end);
