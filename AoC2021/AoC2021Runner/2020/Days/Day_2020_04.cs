@@ -49,7 +49,7 @@ internal class Day_2020_04 : IDayChallenge
             {
                 var units = value[^2..];
 
-                 if (units == "cm")
+                if (units == "cm")
                 {
                     return InRange(value[..^2], 150, 193);
                 }
