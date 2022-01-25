@@ -15,33 +15,4 @@
     <None Remove="*\Inputs\*.txt" />
     <EmbeddedResource Include="*\Inputs\*.txt" />
   </ItemGroup>
-  
-  <ItemGroup>
-    <None Remove="2020\Input\Day_2020_01.txt" />
-    <None Remove="2020\Input\Day_2020_02.txt" />
-    <None Remove="2020\Input\Day_2020_03.txt" />
-    <None Remove="2020\Input\Day_2020_04.txt" />
-    <None Remove="2020\Input\Day_2020_05.txt" />
-    <None Remove="2020\Input\Day_2020_06.txt" />
-    <None Remove="2020\Input\Day_2020_07.txt" />
-    <None Remove="2020\Input\Day_2020_08.txt" />
-    <None Remove="2020\Input\Day_2020_09.txt" />
-    <None Remove="2020\Input\Day_2020_10.txt" />
-    <None Remove="2020\Input\Day_2020_11.txt" />
-  </ItemGroup>
-  
-  <ItemGroup>
-    <EmbeddedResource Include="2020\Input\Day_2020_11.txt" />
-    <EmbeddedResource Include="2020\Input\Day_2020_10.txt" />
-    <EmbeddedResource Include="2020\Input\Day_2020_09.txt" />
-    <EmbeddedResource Include="2020\Input\Day_2020_08.txt" />
-    <EmbeddedResource Include="2020\Input\Day_2020_07.txt" />
-    <EmbeddedResource Include="2020\Input\Day_2020_06.txt" />
-    <EmbeddedResource Include="2020\Input\Day_2020_05.txt" />
-    <EmbeddedResource Include="2020\Input\Day_2020_04.txt" />
-    <EmbeddedResource Include="2020\Input\Day_2020_03.txt" />
-    <EmbeddedResource Include="2020\Input\Day_2020_02.txt" />
-    <EmbeddedResource Include="2020\Input\Day_2020_01.txt" />
-  </ItemGroup>
-
 </Project>
