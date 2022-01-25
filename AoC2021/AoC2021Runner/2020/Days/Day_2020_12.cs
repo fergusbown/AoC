@@ -56,6 +56,25 @@ internal class Day_2020_12 : IDayChallenge
             }
         }
 
+        public void MoveDirection(char command, int amount)
+        {
+            switch (command)
+            {
+                case 'N':
+                    MoveDirection(0, amount);
+                    break;
+                case 'S':
+                    MoveDirection(180, amount);
+                    break;
+                case 'E':
+                    MoveDirection(90, amount);
+                    break;
+                case 'W':
+                    MoveDirection(270, amount);
+                    break;
+            }
+        }
+
         public void Rotate(int degrees)
         {
             var (x, y) = (X, Y);
@@ -95,18 +114,6 @@ internal class Day_2020_12 : IDayChallenge
             {
                 switch (command)
                 {
-                    case 'N':
-                        position.MoveDirection(0, amount);
-                        break;
-                    case 'S':
-                        position.MoveDirection(180, amount);
-                        break;
-                    case 'E':
-                        position.MoveDirection(90, amount);
-                        break;
-                    case 'W':
-                        position.MoveDirection(270, amount);
-                        break;
                     case 'L':
                         Turn(-amount);
                         break;
@@ -117,6 +124,7 @@ internal class Day_2020_12 : IDayChallenge
                         position.MoveDirection(this.degrees, amount);
                         break;
                     default:
+                        position.MoveDirection(command, amount);
                         break;
                 }
             }
@@ -152,18 +160,6 @@ internal class Day_2020_12 : IDayChallenge
             {
                 switch (command)
                 {
-                    case 'N':
-                        waypoint.MoveDirection(0, amount);
-                        break;
-                    case 'S':
-                        waypoint.MoveDirection(180, amount);
-                        break;
-                    case 'E':
-                        waypoint.MoveDirection(90, amount);
-                        break;
-                    case 'W':
-                        waypoint.MoveDirection(270, amount);
-                        break;
                     case 'L':
                         waypoint.Rotate(-amount);
                         break;
@@ -175,6 +171,7 @@ internal class Day_2020_12 : IDayChallenge
                         position.Y += waypoint.Y * amount;
                         break;
                     default:
+                        waypoint.MoveDirection(command, amount);
                         break;
                 }
             }
