@@ -30,7 +30,7 @@ internal class Day_2020_13 : IDayChallenge
         int minWaitTime = int.MaxValue;
         int nearestBus = 0;
 
-        foreach (int bus in buses.Select(b => b.bus))
+        foreach ((int bus, _) in buses)
         {
             int waitTime = bus - (earliestArrivalTime % bus);
 
