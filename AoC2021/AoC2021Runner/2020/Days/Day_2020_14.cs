@@ -129,7 +129,7 @@ internal class Day_2020_14 : IDayChallenge
             foreach (var command in program)
             {
                 var commandParts = command
-                    .Split(new string[] { "[", "]", " = " }, StringSplitOptions.RemoveEmptyEntries);
+                    .Split(new string[] { "[", "] = ", " = " }, StringSplitOptions.None);
 
                 switch (commandParts[0])
                 {
