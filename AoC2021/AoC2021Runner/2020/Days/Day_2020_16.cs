@@ -45,7 +45,7 @@ internal class Day_2020_16 : IDayChallenge
             })
             .ToArray();
 
-        Dictionary<string, int> finalfieldMappings = new();
+        Dictionary<string, int> finalFieldMappings = new();
         
         while(possibleFieldMappings.Length > 0)
         {
@@ -55,7 +55,7 @@ internal class Day_2020_16 : IDayChallenge
             foreach((var index, var fields) in resolved)
             {
                 var mappedTo = fields[0];
-                finalfieldMappings.Add(mappedTo, index);
+                finalFieldMappings.Add(mappedTo, index);
 
                 foreach(var remaining in possibleFieldMappings)
                 {
@@ -64,7 +64,7 @@ internal class Day_2020_16 : IDayChallenge
             }
         }
 
-        var departureProducts = finalfieldMappings
+        var departureProducts = finalFieldMappings
             .Where(m => m.Key.StartsWith("departure"))
             .Select(v => ticket[v.Value])
             .Aggregate(1L, (x, y) => x * y);
