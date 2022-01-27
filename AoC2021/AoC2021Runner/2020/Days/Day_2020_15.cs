@@ -24,11 +24,11 @@ internal class Day_2020_15 : IDayChallenge
 
     private static int PlayRounds(int[] startingNumbers, int gameLength)
     {
-        Dictionary<int, int> previouslySpoken = new(gameLength);
+        int[] previouslySpoken = new int[gameLength];
 
         for (int i = 0; i < startingNumbers.Length - 1; i++)
         {
-            previouslySpoken.Add(startingNumbers[i], i);
+            previouslySpoken[startingNumbers[i]] = i+1;
         }
 
         int lastSpoken = startingNumbers[^1];
@@ -36,16 +36,17 @@ internal class Day_2020_15 : IDayChallenge
         for (int i = startingNumbers.Length; i < gameLength; i++)
         {
             int nextSpoken;
-            if (previouslySpoken.TryGetValue(lastSpoken, out var spokenInRound))
+            int spokenInRound = previouslySpoken[lastSpoken];
+            if (spokenInRound > 0)
             {
-                nextSpoken = i - spokenInRound - 1;
+                nextSpoken = i - spokenInRound;
             }
             else
             {
                 nextSpoken = 0;
             }
 
-            previouslySpoken[lastSpoken] = i - 1;
+            previouslySpoken[lastSpoken] = i;
             lastSpoken = nextSpoken;
         }
 
