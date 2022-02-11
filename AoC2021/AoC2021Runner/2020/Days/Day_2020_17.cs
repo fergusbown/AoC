@@ -12,19 +12,29 @@ internal class Day_2020_17 : IDayChallenge
     }
 
     public string Part1()
-        => Solve(GetStartSpace(inputData, false));
+        => Solve(GetStartSpace(inputData, false, 6));
 
     public string Part2()
-        => Solve(GetStartSpace(inputData, true));
+        => Solve(GetStartSpace(inputData, true, 6));
 
-    private static Space4d<SpaceActive> GetStartSpace(string inputData, bool fourthDimension)
+    private static Space4d<SpaceActive> GetStartSpace(string inputData, bool fourthDimension, int numberOfCycles)
     {
         var rows = inputData.StringsForDay();
         int height = rows.Length;
         int width = rows[0].Length;
+        int depth = 1;
+        int metaDimension = 1;
 
-        Space4d<SpaceActive> result = new(width + 12, height +12, 13, fourthDimension ? 13 : 1);
+        int spaceForCycles = numberOfCycles * 2;
         int fourthIndex = fourthDimension ? 6 : 0;
+
+        Space4d<SpaceActive> result = new(
+            width + spaceForCycles,
+            height + spaceForCycles, 
+            depth + spaceForCycles, 
+            fourthDimension 
+                ? metaDimension + spaceForCycles 
+                : metaDimension);
 
         for (int y = 0; y < height; y++)
         {
@@ -42,8 +52,9 @@ internal class Day_2020_17 : IDayChallenge
     private static string Solve(Space4d<SpaceActive> space)
     {
         int lit = 0;
+        int numberOfCycles = space.Depth / 2;
 
-        for (int offset = 5; offset >= 0; offset--)
+        for (int offset = numberOfCycles - 1; offset >= 0; offset--)
         {
             List<SpaceActive> dirty = new();
             lit = 0;

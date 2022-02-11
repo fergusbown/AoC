@@ -17,8 +17,11 @@ public class Space4d<TElementType>
     }
 
     public int Width => data.GetLength(0);
+
     public int Height => data.GetLength(1);
+
     public int Depth => data.GetLength(2);
+
     public int MetaDimensionSize => data.GetLength(3);
 
     public IEnumerable<TElementType> Adjacencies(int x, int y, int z, int w)
