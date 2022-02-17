@@ -22,15 +22,16 @@ static IEnumerable<(int year, int Day, IDayChallenge Solution)> GetSolutions(str
             (int year, int day, Type type) result = (int.Parse(t.Name[4..8]), int.Parse(t.Name[9..]), t);
             return result;
         })
-        .Where(t => t.year == 2020)
         .Select(t =>
         {
             string inputData = InputData.InputForDay(t.type);
             (int year, int day, IDayChallenge solution) result = (t.year, t.day, (IDayChallenge)Activator.CreateInstance(t.type, inputData)!);
             return result;
         })
+        .Where(t => t.year == 2020)
         .OrderBy(t => t.year)
         .ThenBy(t => t.day)
+        .TakeLast(1)
         .ToList();
 }
 
