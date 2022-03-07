@@ -36,7 +36,7 @@ internal partial class Day_2020_22 : IDayChallenge
 
         while(state.Draw(out int player1Card, out int player2Card, out _))
         {
-            state.EndRound(player1Card > player2Card, player1Card, player2Card);
+            state.EndRound(player1Card, player2Card);
         }
         
         return state.WinningScore();
@@ -45,11 +45,11 @@ internal partial class Day_2020_22 : IDayChallenge
     static long PlayRecursive(int[] player1, int[] player2)
     {
         GameState state = new(player1, player2);
-        Play(state, out _);
+        _ = Play(state);
 
         return state.WinningScore();
 
-        static void Play(GameState state, out bool player1Wins)
+        static bool Play(GameState state)
         {
             HashSet<GameState> previousRounds = new();
 
@@ -57,25 +57,23 @@ internal partial class Day_2020_22 : IDayChallenge
             {
                 if (previousRounds.Contains(state))
                 {
-                    player1Wins = true;
-                    return;
+                    return true;
                 }
 
                 previousRounds.Add(state.Clone());
 
-                if (!state.Draw(out int player1Card, out int player2Card, out player1Wins))
+                if (!state.Draw(out int player1Card, out int player2Card, out bool player1Wins))
                 {
-                    return;
+                    return player1Wins;
                 }
 
                 if (state.CanRecurse(player1Card, player2Card, out GameState? subGameState))
                 {
-                    Play(subGameState, out bool player1WinsSubGame);
-                    state.EndRound(player1WinsSubGame, player1Card, player2Card);
+                    state.EndRound(player1Card, player2Card, Play(subGameState));
                 }
                 else
                 {
-                    state.EndRound(player1Card > player2Card, player1Card, player2Card);
+                    state.EndRound(player1Card, player2Card);
                 }
             }
         }
@@ -144,9 +142,9 @@ internal partial class Day_2020_22 : IDayChallenge
             return new(player1Deck, player2Deck);
         }
 
-        public void EndRound(bool player1Wins, int player1Card, int player2Card)
+        public void EndRound(int player1Card, int player2Card, bool? player1Wins = null)
         {
-            if (player1Wins)
+            if (player1Wins ?? player1Card > player2Card)
             {
                 player1Deck.Enqueue(player1Card);
                 player1Deck.Enqueue(player2Card);
@@ -155,7 +153,6 @@ internal partial class Day_2020_22 : IDayChallenge
             {
                 player2Deck.Enqueue(player2Card);
                 player2Deck.Enqueue(player1Card);
-
             }
         }
     }
