@@ -1,6 +1,8 @@
-﻿namespace AoC2021Runner;
+﻿using Generator.Equals;
 
-internal class Day_2021_22 : IDayChallenge
+namespace AoC2021Runner;
+
+internal partial class Day_2021_22 : IDayChallenge
 {
     private readonly IReadOnlyList<Instruction> instructions;
 
@@ -62,7 +64,8 @@ internal class Day_2021_22 : IDayChallenge
         public Region Region { get; }
     }
 
-    private class Region : IEquatable<Region>
+    [Equatable]
+    private partial class Region
     {
         public Region((int X, int Y, int Z) start, (int X, int Y, int Z) end)
         {
@@ -75,26 +78,6 @@ internal class Day_2021_22 : IDayChallenge
         public (int X, int Y, int Z) End { get; }
 
         public long Volume => 1L * (End.X - Start.X + 1) * (End.Y - Start.Y + 1) * (End.Z - Start.Z + 1);
-
-        public bool Equals(Region? other)
-        {
-            if (other is null)
-            {
-                return false;
-            }
-
-            return other.Start == this.Start && other.End == this.End;
-        }
-
-        public override int GetHashCode()
-        {
-            return HashCode.Combine(Start, End);
-        }
-
-        public override bool Equals(object? obj)
-        {
-            return base.Equals(obj as Region);
-        }
 
         public override string ToString()
         {

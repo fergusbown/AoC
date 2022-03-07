@@ -1,8 +1,9 @@
-﻿using System.Diagnostics.CodeAnalysis;
+﻿using Generator.Equals;
+using System.Diagnostics.CodeAnalysis;
 
 namespace AoC2021Runner;
 
-internal class Day_2021_23 : IDayChallenge
+internal partial class Day_2021_23 : IDayChallenge
 {
     private readonly string inputData;
 
@@ -297,9 +298,11 @@ internal class Day_2021_23 : IDayChallenge
         }
     }
 
-    private class Burrow : IEquatable<Burrow>
+    [Equatable]
+    private partial class Burrow : IEquatable<Burrow>
     {
-        private readonly AmphipodType[] occupations;
+        [OrderedEquality]
+        private AmphipodType[] occupations { get; }
 
         public void UpdateGraph(Graph<DijkstraAlgorithm.IData<AmphipodType>> graph)
         {
@@ -307,33 +310,6 @@ internal class Day_2021_23 : IDayChallenge
             {
                 graph.Nodes[i].Data.NodeData = occupations[i];
             }
-        }
-
-        public bool Equals(Burrow? other)
-        {
-            if (other is null)
-            {
-                return false;
-            }
-
-            return this.occupations.SequenceEqual(other.occupations);
-        }
-
-        public override bool Equals(object? obj)
-        {
-            return Equals(obj as Burrow);
-        }
-
-        public override int GetHashCode()
-        {
-            HashCode hash = default;
-
-            foreach (var occupation in occupations)
-            {
-                hash.Add(occupation);
-            }
-
-            return hash.ToHashCode();
         }
 
         public int RoomSize => (occupations.Length - 11) / 4;

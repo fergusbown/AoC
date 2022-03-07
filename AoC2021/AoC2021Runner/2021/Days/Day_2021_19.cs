@@ -1,6 +1,8 @@
-﻿namespace AoC2021Runner;
+﻿using Generator.Equals;
 
-internal class Day_2021_19 : IDayChallenge
+namespace AoC2021Runner;
+
+internal partial class Day_2021_19 : IDayChallenge
 {
     private readonly IReadOnlyList<Scanner> inputData;
 
@@ -207,7 +209,8 @@ internal class Day_2021_19 : IDayChallenge
     }
 
 
-    private class Beacon : IEquatable<Beacon>
+    [Equatable]
+    private partial class Beacon
     {
         public Beacon(int x, int y, int z)
         {
@@ -219,26 +222,6 @@ internal class Day_2021_19 : IDayChallenge
         public int X { get; }
         public int Y { get; }
         public int Z { get; }
-
-        public bool Equals(Beacon? other)
-        {
-            if (other is null)
-            {
-                return false;
-            }
-
-            return other.X == X && other.Y == Y && other.Z == Z;
-        }
-
-        public override int GetHashCode()
-        {
-            return X + Y + Z;
-        }
-
-        public override bool Equals(object? obj)
-        {
-            return Equals(obj as Beacon);
-        }
 
         public IReadOnlyList<Beacon> Rotations()
         {

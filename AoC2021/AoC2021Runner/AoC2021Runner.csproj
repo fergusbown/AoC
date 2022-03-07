@@ -9,6 +9,7 @@
 
   <ItemGroup>
     <PackageReference Include="Microsoft.Toolkit.HighPerformance" Version="7.1.2" />
+    <PackageReference Include="Generator.Equals" Version="2.2.3" />
   </ItemGroup>
   
   <ItemGroup>
