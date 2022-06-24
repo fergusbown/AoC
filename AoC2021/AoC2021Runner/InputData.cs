@@ -5,12 +5,20 @@ namespace AoC2021Runner;
 
 internal static class InputData
 {
-    public static string InputForDay(Type implementation)
+    public static string? InputForDay(Type implementation)
     {
-        string resourceName = implementation.Assembly.GetManifestResourceNames().Single(n => n.EndsWith($"{implementation.Name}.txt"));
-        using Stream stream = implementation.Assembly.GetManifestResourceStream(resourceName)!;
-        using StreamReader reader = new(stream);
-        return reader.ReadToEnd();
+        string? resourceName = implementation.Assembly.GetManifestResourceNames().SingleOrDefault(n => n.EndsWith($"{implementation.Name}.txt"));
+
+        if (resourceName is null)
+        {
+            return null;
+        }
+        else
+        {
+            using Stream stream = implementation.Assembly.GetManifestResourceStream(resourceName)!;
+            using StreamReader reader = new(stream);
+            return reader.ReadToEnd();
+        }
     }
 
     public static string[] StringsForDay(this string inputData)

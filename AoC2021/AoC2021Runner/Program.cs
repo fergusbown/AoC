@@ -28,8 +28,11 @@ static IEnumerable<(int year, int Day, IDayChallenge Solution)> GetSolutions(str
         .TakeLast(1)
         .Select(t =>
         {
-            string inputData = InputData.InputForDay(t.type);
-            (int year, int day, IDayChallenge solution) result = (t.year, t.day, (IDayChallenge)Activator.CreateInstance(t.type, inputData)!);
+            string? inputData = InputData.InputForDay(t.type);
+
+            var instance = inputData is null ? Activator.CreateInstance(t.type) : Activator.CreateInstance(t.type, inputData);
+
+            (int year, int day, IDayChallenge solution) result = (t.year, t.day, (IDayChallenge)instance!);
             return result;
         })
         .ToList();
