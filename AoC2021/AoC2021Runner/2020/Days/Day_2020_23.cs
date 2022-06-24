@@ -1,8 +1,4 @@
-﻿using Generator.Equals;
-using System.Collections.Immutable;
-using System.Diagnostics.CodeAnalysis;
-using System.Text;
-
+﻿using System.Collections.Immutable;
 
 namespace AoC2021Runner;
 
@@ -24,7 +20,7 @@ internal partial class Day_2020_23 : IDayChallenge
         Cups.Cup current = one.ClockwiseCup;
 
         int result = 0;
-        while(current != one)
+        while (current != one)
         {
             result = result * 10 + current.Value;
             current = current.ClockwiseCup;
