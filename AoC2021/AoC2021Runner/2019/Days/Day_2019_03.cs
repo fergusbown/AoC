@@ -64,24 +64,13 @@ internal partial class Day_2019_03 : IDayChallenge
 
         foreach (var instruction in wire)
         {
-            int xDelta = 0;
-            int yDelta = 0;
-
-            switch (instruction.Direction)
+            (int xDelta, int yDelta) = instruction.Direction switch
             {
-                case Direction.Up:
-                    yDelta = 1;
-                    break;
-                case Direction.Down:
-                    yDelta = -1;
-                    break;
-                case Direction.Right:
-                    xDelta = 1;
-                    break;
-                case Direction.Left:
-                    xDelta = -1;
-                    break;
-            }
+                Direction.Up => (0, 1),
+                Direction.Down => (0, -1),
+                Direction.Right => (1, 0),
+                _ => (-1, 0),
+            };
 
             for (int i = 0; i < instruction.Distance; i++)
             {
