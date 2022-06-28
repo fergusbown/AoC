@@ -1,5 +1,4 @@
-﻿using System.Numerics;
-using MoreLinq;
+﻿using MoreLinq;
 
 namespace AoC2021Runner;
 
