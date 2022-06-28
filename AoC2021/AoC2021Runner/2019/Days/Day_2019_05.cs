@@ -13,7 +13,7 @@ internal partial class Day_2019_05 : IAsyncDayChallenge
     {
         var computer = new IntCodeComputer(1);
 
-        int result = await computer.Run(computer.GetProgram(this.inputData)) ?? throw new InvalidOperationException();
+        int result = await computer.Run(computer.GetProgram(this.inputData));
 
         return result.ToString();
     }
@@ -22,7 +22,7 @@ internal partial class Day_2019_05 : IAsyncDayChallenge
     {
         var computer = new IntCodeComputer(5);
 
-        int result = await computer.Run(computer.GetProgram(this.inputData)) ?? throw new InvalidOperationException();
+        int result = await computer.Run(computer.GetProgram(this.inputData));
 
         return result.ToString();
     }

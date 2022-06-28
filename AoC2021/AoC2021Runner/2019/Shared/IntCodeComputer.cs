@@ -40,51 +40,44 @@ namespace AoC2021Runner
             this.outputOperator.OutputAction = (v) => destination.AddInput(v);
         }
 
-        public async Task<int?> Run(int[] program)
+        public async Task<int> Run(int[] program)
         {
-            try
-            {
-                int address = 0;
-                int opCodeAndMode = program[address++];
+            int address = 0;
+            int opCodeAndMode = program[address++];
 
-                while (opCodeAndMode != 99)
+            while (opCodeAndMode != 99)
+            {
+                int opCode = opCodeAndMode % 100;
+                int parametersMode = opCodeAndMode / 100;
+
+                if (this.operators.TryGetValue(opCode, out IIntCodeOperator? op))
                 {
-                    int opCode = opCodeAndMode % 100;
-                    int parametersMode = opCodeAndMode / 100;
-
-                    if (this.operators.TryGetValue(opCode, out IIntCodeOperator? op))
+                    for (int i = 0; i < op.Operands.Count; i++)
                     {
-                        for (int i = 0; i < op.Operands.Count; i++)
+                        int parameterMode = parametersMode % 10;
+                        parametersMode /= 10;
+
+                        operands[i] = program[address++];
+
+                        if (parameterMode == 0 && op.Operands[i] == OperandDirection.Input)
                         {
-                            int parameterMode = parametersMode % 10;
-                            parametersMode /= 10;
-
-                            operands[i] = program[address++];
-
-                            if (parameterMode == 0 && op.Operands[i] == OperandDirection.Input)
-                            {
-                                operands[i] = program[operands[i]];
-                            }
+                            operands[i] = program[operands[i]];
                         }
+                    }
 
-                        address = await op.Execute(operands, program) ?? address;
-                        opCodeAndMode = program[address++];
-                    }
-                    else
-                    {
-                        return null;
-                    }
+                    address = await op.Execute(operands, program) ?? address;
+                    opCodeAndMode = program[address++];
                 }
+                else
+                {
+                    throw new InvalidOperationException();
+                }
+            }
 
-                return program[0];
-            }
-            catch (IndexOutOfRangeException)
-            {
-                return null;
-            }
+            return program[0];
         }
 
-        public Task<int?> Run(int[] program, int noun, int verb)
+        public Task<int> Run(int[] program, int noun, int verb)
         {
             program[1] = noun;
             program[2] = verb;

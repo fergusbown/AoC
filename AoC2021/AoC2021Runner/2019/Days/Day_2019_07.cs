@@ -22,7 +22,7 @@ internal partial class Day_2019_07 : IAsyncDayChallenge
             foreach (var phase in phases)
             {
                 var computer = new IntCodeComputer(phase, input);
-                input = await computer.Run(computer.GetProgram(this.inputData)) ?? throw new InvalidOperationException();
+                input = await computer.Run(computer.GetProgram(this.inputData));
             }
 
             bestThrust = Math.Max(bestThrust, input);
@@ -54,9 +54,9 @@ internal partial class Day_2019_07 : IAsyncDayChallenge
             computers[^1].PipeOutputTo(computers[0]);
 
             computers[0].AddInput(0);
-            int?[] results = await Task.WhenAll(computers.Select(c => c.Run(c.GetProgram(inputData))));
+            int[] results = await Task.WhenAll(computers.Select(c => c.Run(c.GetProgram(inputData))));
 
-            return results[^1] ?? throw new InvalidOperationException();
+            return results[^1];
         }
     }
 }
