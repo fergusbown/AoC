@@ -11,29 +11,15 @@ internal partial class Day_2019_07 : IAsyncDayChallenge
         this.inputData = inputData;
     }
 
-    public async Task<string> Part1()
+    public Task<string> Part1()
+        => Solve(Enumerable.Range(0, 5));
+
+    public Task<string> Part2()
+        => Solve(Enumerable.Range(5, 5));
+
+    private async Task<string> Solve(IEnumerable<int> phases)
     {
-        int bestThrust = 0;
-        foreach (var phases in Enumerable.Range(0, 5).Permutations())
-        {
-            int input = 0;
-
-            foreach (var phase in phases)
-            {
-                var computer = new IntCodeComputer(phase, input);
-                input = await computer.Run(computer.GetProgram(this.inputData));
-            }
-
-            bestThrust = Math.Max(bestThrust, input);
-        }
-
-        return bestThrust.ToString();
-    }
-
-    public async Task<string> Part2()
-    {
-        var thrusts = await Task.WhenAll(Enumerable
-            .Range(5, 5)
+        var thrusts = await Task.WhenAll(phases
             .Permutations()
             .Select(p => GetThrust(p, this.inputData)));
 
