@@ -7,6 +7,12 @@ namespace AoC2021Runner;
 /// </summary>
 internal static class DijkstraAlgorithm
 {
+    public class DijkstraGraph<TNodeData> : Graph<IData<TNodeData>>
+    {
+        public Node AddNode(TNodeData data)
+            => AddNode(new Data<TNodeData>(data));
+    }
+
     public interface IData<TNodeData>
     {
         TNodeData NodeData { get; set; }
