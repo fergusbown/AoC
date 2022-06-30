@@ -1,4 +1,6 @@
-﻿namespace AoC2021Runner
+﻿using System.Collections.Immutable;
+
+namespace AoC2021Runner
 {
     internal static class Factorisation
     {
@@ -28,12 +30,17 @@
             return primes;
         }
 
-        public static IReadOnlyCollection<(int factor, int factorCount)> GetPrimeFactors(int number)
+        public static ImmutableDictionary<int, int> GetPrimeFactors(int number)
             => GetPrimeFactors(CalculatePrimes(number), number);
 
-        public static IReadOnlyCollection<(int factor, int factorCount)> GetPrimeFactors(IReadOnlyCollection<int> primes, int number)
+        public static ImmutableDictionary<int, int> GetPrimeFactors(IReadOnlyCollection<int> primes, int number)
         {
-            var factors = new List<(int, int)>();
+            var factors = new Dictionary<int, int>();
+
+            if (number == 0)
+            {
+                return factors.ToImmutableDictionary();
+            }
 
             foreach (var prime in primes)
             {
@@ -52,11 +59,11 @@
 
                 if (count > 0)
                 {
-                    factors.Add((prime, count));
+                    factors.Add(prime, count);
                 }
             }
 
-            return factors;
+            return factors.ToImmutableDictionary();
         }
 
         public static long GetLowestCommonMultiple(IReadOnlyCollection<int> numbers)
@@ -90,5 +97,25 @@
             return result;
         }
 
+        public static (int Top, int Bottom) ReduceFraction(int top, int bottom, IReadOnlyCollection<int> primes)
+        {
+            var topFactors = GetPrimeFactors(primes, top);
+            var bottomFactors = GetPrimeFactors(primes, bottom);
+
+            var commonFactors = topFactors.Keys.Intersect(bottomFactors.Keys);
+            int largestCommonFactor = 1;
+
+            foreach (var factor in commonFactors)
+            {
+                int numberInCommon = Math.Min(topFactors[factor], bottomFactors[factor]);
+
+                for (int i = 0; i < numberInCommon; i++)
+                {
+                    largestCommonFactor *= factor;
+                }
+            }
+
+            return (top / largestCommonFactor, bottom / largestCommonFactor);
+        }
     }
 }
