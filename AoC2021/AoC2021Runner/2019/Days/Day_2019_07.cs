@@ -4,11 +4,11 @@ namespace AoC2021Runner;
 
 internal partial class Day_2019_07 : IAsyncDayChallenge
 {
-    private readonly string inputData;
+    private readonly long[] inputData;
 
     public Day_2019_07(string inputData)
     {
-        this.inputData = inputData;
+        this.inputData = IntCodeComputer.GetProgram(inputData);
     }
 
     public Task<string> Part1()
@@ -25,10 +25,10 @@ internal partial class Day_2019_07 : IAsyncDayChallenge
 
         return thrusts.Max().ToString();
 
-        static async Task<int> GetThrust(IList<int> phases, string inputData)
+        static async Task<long> GetThrust(IList<int> phases, long[] inputData)
         {
             var computers = phases
-                .Select(p => new IntCodeComputer(p))
+                .Select(p => IntCodeComputer.New().AddInput(p))
                 .ToArray();
 
             for (int i = 0; i < computers.Length - 1; i++)
@@ -39,7 +39,7 @@ internal partial class Day_2019_07 : IAsyncDayChallenge
             computers[^1].PipeOutputTo(computers[0]);
 
             computers[0].AddInput(0);
-            int[] results = await Task.WhenAll(computers.Select(c => c.Run(c.GetProgram(inputData))));
+            long[] results = await Task.WhenAll(computers.Select(c => c.Run(inputData)));
 
             return results[^1];
         }
