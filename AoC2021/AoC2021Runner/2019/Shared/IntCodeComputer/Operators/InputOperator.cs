@@ -11,9 +11,17 @@ namespace AoC2021Runner
         public async Task Execute(long[] operands, IntCodeComputer.ProgramState state)
         {
             long input;
-            while(!inputs.TryDequeue(out input))
+
+            if (InputProvider is null)
             {
-                await Task.Delay(1);
+                while (!inputs.TryDequeue(out input))
+                {
+                    await Task.Delay(1);
+                }
+            }
+            else
+            {
+                input = await InputProvider();
             }
 
             state[operands[0]] = input;
@@ -23,6 +31,8 @@ namespace AoC2021Runner
         {
             this.inputs.Enqueue(value);
         }
+
+        public Func<Task<long>>? InputProvider { get; set; }
     }
 
 }

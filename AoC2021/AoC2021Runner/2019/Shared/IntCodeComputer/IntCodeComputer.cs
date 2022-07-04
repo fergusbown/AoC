@@ -100,14 +100,22 @@ namespace AoC2021Runner
             return this;
         }
 
-        public void PipeOutputTo(IntCodeComputer destination)
+        public IntCodeComputer PipeInputFrom(Func<Task<long>> source)
         {
-            this.outputOperator.OutputAction = (v) => destination.AddInput(v);
+            this.inputOperator.InputProvider = source;
+            return this;
         }
 
-        public void PipeOutputTo(Action<long> destination)
+        public IntCodeComputer PipeOutputTo(IntCodeComputer destination)
+        {
+            this.outputOperator.OutputAction = (v) => destination.AddInput(v);
+            return this;
+        }
+
+        public IntCodeComputer PipeOutputTo(Action<long> destination)
         {
             this.outputOperator.OutputAction = destination;
+            return this;
         }
 
         public async Task<long> Run(long[] initialProgram)
