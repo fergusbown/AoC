@@ -66,10 +66,10 @@ namespace AoC2021Runner
             return factors.ToImmutableDictionary();
         }
 
-        public static long GetLowestCommonMultiple(IReadOnlyCollection<int> numbers)
+        public static long GetLowestCommonMultiple(params int[] numbers)
             => GetLowestCommonMultiple(CalculatePrimes(numbers.Max()), numbers);
 
-        public static long GetLowestCommonMultiple(IReadOnlyCollection<int> primes, IReadOnlyCollection<int> numbers)
+        public static long GetLowestCommonMultiple(IReadOnlyCollection<int> primes, params int[] numbers)
         {
             var primeFactors = numbers
                 .Select(n => GetPrimeFactors(primes, n))
@@ -91,7 +91,10 @@ namespace AoC2021Runner
             long result = 1;
             foreach (var (factor, count) in maxPrimeFactors)
             {
-                result *= factor * count;
+                for (int i = 0; i < count; i++)
+                {
+                    result *= factor;
+                }
             }
 
             return result;
