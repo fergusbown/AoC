@@ -62,7 +62,6 @@ internal partial class Day_2019_15 : IAsyncDayChallenge
                 { (0, 0), LocationType.Empty },
             };
 
-
             Stack<Exploration> pending = new();
             Stack<Exploration> backtracks = new();
 
