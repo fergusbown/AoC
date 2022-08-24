@@ -26,12 +26,12 @@ internal class Graph<TNodeData>
 
         public IReadOnlyCollection<Edge> Edges => edges;
 
-        public void AddEdgeTo(Node end, int weight)
+        public void AddEdgeTo(Node end, long weight)
         {
             this.edges.Add(new Edge(this, end, weight));
         }
 
-        public void AddEdgesBetween(Node other, int weight)
+        public void AddEdgesBetween(Node other, long weight)
         {
             this.AddEdgeTo(other, weight);
             other.AddEdgeTo(this, weight);
@@ -40,17 +40,45 @@ internal class Graph<TNodeData>
 
     internal class Edge
     {
-        public Edge(Node start, Node end, int weight)
+        public Edge(Node start, Node end, long weight)
         {
             Start = start;
             End = end;
             Weight = weight;
         }
 
-        public int Weight { get; }
+        public long Weight { get; }
 
         public Node Start { get; }
 
         public Node End { get; }
+    }
+
+    public class DirectionAgnosticEdgeComparer : IEqualityComparer<Edge>
+    {
+        bool IEqualityComparer<Graph<TNodeData>.Edge>.Equals(Graph<TNodeData>.Edge? x, Graph<TNodeData>.Edge? y)
+        {
+            if (x is null)
+            {
+                return y is null;
+            }
+
+            if (y is null)
+            {
+                return false;
+            }
+
+            if (x.Weight != y.Weight)
+            {
+                return false;
+            }
+
+            return (x.Start == y.Start && x.End == y.End) || (x.Start == y.End && x.End == y.Start);
+        }
+
+        int IEqualityComparer<Graph<TNodeData>.Edge>.GetHashCode(Graph<TNodeData>.Edge obj)
+        {
+            return obj.Start.GetHashCode() + obj.End.GetHashCode();
+        }
     }
 }

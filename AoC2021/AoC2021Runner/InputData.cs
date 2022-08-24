@@ -42,7 +42,7 @@ internal static class InputData
 
     public static Span2D<T> GridForDay<T>(
         this string inputData,
-        Func<char, T> parse,
+        ParseGridDelegate<T> parse,
         int extraBorder = 0,
         Func<T>? borderValue = null)
     {
@@ -82,10 +82,20 @@ internal static class InputData
 
             for (int columnIndex = 0; columnIndex < row.Length; columnIndex++)
             {
-                grid[rowIndex + extraBorder, columnIndex + extraBorder] = parse(row[columnIndex]);
+                grid[rowIndex + extraBorder, columnIndex + extraBorder] = parse(row[columnIndex], rowIndex, columnIndex);
             }
         }
 
         return grid;
+
     }
+
+    public static Span2D<T> GridForDay<T>(
+        this string inputData,
+        Func<char, T> parse,
+        int extraBorder = 0,
+        Func<T>? borderValue = null)
+        => inputData.GridForDay((c, _, _) => parse(c), extraBorder, borderValue);
 }
+
+public delegate T ParseGridDelegate<T>(char value, int row, int column);

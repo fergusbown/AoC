@@ -65,7 +65,7 @@ internal class Program
             Stopwatch sw = Stopwatch.StartNew();
             T result = await operation();
 
-            Console.WriteLine(logFunction(result, $" ({sw.ElapsedMilliseconds}ms)"));
+            Console.WriteLine(logFunction(result, $" ({sw.Elapsed:g})"));
 
             return result;
         }

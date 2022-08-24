@@ -39,7 +39,7 @@ internal class Day_2020_07 : IDayChallenge
 
         Stack<Graph<string>.Node> pending = new();
         pending.Push(shinyGoldBag);
-        int bagsRequiredInside = 0;
+        long bagsRequiredInside = 0;
 
         while (pending.TryPop(out var bag))
         {
