@@ -1,4 +1,5 @@
 ﻿using System.Collections.Immutable;
+using System.Numerics;
 
 namespace AoC2021Runner
 {
@@ -119,6 +120,48 @@ namespace AoC2021Runner
             }
 
             return (top / largestCommonFactor, bottom / largestCommonFactor);
+        }
+
+        public static long GreatestCommonDivisor(long a, long b, out long x, out long y)
+        {
+            // Base Case
+            if (a == 0)
+            {
+                x = 0;
+                y = 1;
+                return b;
+            }
+
+            long gcd = GreatestCommonDivisor(b % a, a, out long x1, out long y1);
+
+            x = y1 - (b / a) * x1;
+            y = x1;
+
+            return gcd;
+        }
+
+        public static long? ModuloInverse(long a, long mod)
+        {
+            long gcd = GreatestCommonDivisor(a, mod, out long x, out long y);
+
+            if (gcd != 1)
+            {
+                return null;
+            }
+
+            return (x % mod + mod) % mod;
+        }
+
+        public static long? ModuloDivide(long numerator, long denominator, long mod)
+        {
+            BigInteger? inverse = ModuloInverse(denominator, mod);
+
+            if (inverse is null)
+            {
+                return null;
+            }
+
+            return (long)(inverse * (numerator % mod) % mod);
         }
     }
 }

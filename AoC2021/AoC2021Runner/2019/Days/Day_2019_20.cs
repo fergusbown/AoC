@@ -1,13 +1,11 @@
 ﻿using System.Collections.Immutable;
-using System.Diagnostics;
-using System.Diagnostics.CodeAnalysis;
 using Microsoft.Toolkit.HighPerformance;
 
 using Graph = AoC2021Runner.DijkstraAlgorithm.DijkstraGraph<AoC2021Runner.Day_2019_20.Portal?>;
 
 namespace AoC2021Runner;
 
-internal partial class Day_2019_20 : IDayChallenge
+internal class Day_2019_20 : IDayChallenge
 {
     private readonly string inputData;
 
@@ -90,7 +88,7 @@ internal partial class Day_2019_20 : IDayChallenge
             // we can sometimes go up
             if (level != 0)
             {
-                foreach((var deeperExit, var shallowerEntrance) in @return)
+                foreach ((var deeperExit, var shallowerEntrance) in @return)
                 {
                     if (shortestPaths.TryGetValue(deeperExit, out cost))
                     {
