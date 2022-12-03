@@ -1,6 +1,4 @@
-﻿using System.Collections;
-
-namespace AoCRunner;
+﻿namespace AoCRunner;
 
 internal class Day_2020_17 : IDayChallenge
 {

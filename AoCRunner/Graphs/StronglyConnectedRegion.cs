@@ -1,6 +1,4 @@
-﻿using System.Diagnostics.CodeAnalysis;
-
-namespace AoCRunner;
+﻿namespace AoCRunner;
 
 /// <summary>
 /// Work out the regions in a graph

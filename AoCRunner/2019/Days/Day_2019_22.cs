@@ -1,7 +1,4 @@
-﻿using System.Linq.Expressions;
-using System.Xml;
-
-namespace AoCRunner;
+﻿namespace AoCRunner;
 
 internal class Day_2019_22 : IDayChallenge
 {

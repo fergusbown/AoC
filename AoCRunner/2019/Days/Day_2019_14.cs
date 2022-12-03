@@ -1,7 +1,4 @@
-﻿using System.Xml.Linq;
-using Generator.Equals;
-
-namespace AoCRunner;
+﻿namespace AoCRunner;
 
 internal partial class Day_2019_14 : IDayChallenge
 {

@@ -1,5 +1,4 @@
-﻿using System.Linq;
-using Microsoft.Toolkit.HighPerformance;
+﻿using Microsoft.Toolkit.HighPerformance;
 
 namespace AoCRunner;
 
