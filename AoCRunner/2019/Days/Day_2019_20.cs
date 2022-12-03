@@ -1,5 +1,5 @@
 ﻿using System.Collections.Immutable;
-using Microsoft.Toolkit.HighPerformance;
+using CommunityToolkit.HighPerformance;
 
 using Graph = AoCRunner.DijkstraAlgorithm.DijkstraGraph<AoCRunner.Day_2019_20.Portal?>;
 

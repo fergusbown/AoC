@@ -1,5 +1,5 @@
 ﻿using System.Diagnostics;
-using Microsoft.Toolkit.HighPerformance;
+using CommunityToolkit.HighPerformance;
 
 namespace AoCRunner;
 

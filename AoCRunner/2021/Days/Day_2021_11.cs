@@ -1,5 +1,5 @@
 ﻿using System.Drawing;
-using Microsoft.Toolkit.HighPerformance;
+using CommunityToolkit.HighPerformance;
 
 namespace AoCRunner;
 

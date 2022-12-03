@@ -1,7 +1,7 @@
 ﻿using System.Collections.Immutable;
 using System.Text;
 using Generator.Equals;
-using Microsoft.Toolkit.HighPerformance;
+using CommunityToolkit.HighPerformance;
 
 namespace AoCRunner;
 
