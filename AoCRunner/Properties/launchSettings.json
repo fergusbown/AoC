@@ -1,0 +1,8 @@
+{
+  "profiles": {
+    "AoCRunner": {
+      "commandName": "Project",
+      "commandLineArgs": "--latest"
+    }
+  }
+}
