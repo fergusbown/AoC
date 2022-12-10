@@ -43,8 +43,6 @@ internal class Day_2022_07 : IDayChallenge
 
         }
 
-        public string Name { get; init; } = string.Empty;
-
         public Directory? Parent { get; init; } = null;
 
         public Directory this[string subdrectory] => subdrectory switch
@@ -93,7 +91,7 @@ internal class Day_2022_07 : IDayChallenge
 
         private void AddDirectory(string name)
         {
-            subdirectories.Add(name, new Directory { Name = name, Parent = this });
+            subdirectories.Add(name, new Directory { Parent = this });
         }
 
         private void AddFile(int size)
