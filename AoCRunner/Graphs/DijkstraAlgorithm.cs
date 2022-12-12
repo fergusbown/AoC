@@ -177,7 +177,15 @@ internal static class DijkstraAlgorithm
             visitedNodeCosts.Add(node, cost.Value);
         }
 
-        return ((int)visitedNodeCosts[end], GetPath());
+        if (visitedNodeCosts.ContainsKey(end))
+        {
+            return (visitedNodeCosts[end], GetPath());
+        }
+        else
+        {
+            return (null, Array.Empty<Graph<TNodeData>.Edge>());
+
+        }
 
         bool TryGetCheapestNode([NotNullWhen(true)] out Graph<TNodeData>.Node? node, [NotNullWhen(true)] out long? cost)
         {
