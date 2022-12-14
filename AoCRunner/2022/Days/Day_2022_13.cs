@@ -1,6 +1,5 @@
 ﻿using System.Diagnostics;
 using System.Diagnostics.CodeAnalysis;
-using System.Text;
 
 namespace AoCRunner;
 
@@ -21,12 +20,12 @@ internal class Day_2022_13 : IDayChallenge
 
         int pairIndex = 0;
         int correctPairsSum = 0;
-        for (int i = 0; i < packets.Length; i+=2)
+        for (int i = 0; i < packets.Length; i += 2)
         {
             pairIndex++;
 
             int compare = PacketPartComparer.Instance.Compare(packets[i], packets[i + 1]);
-            
+
             if (compare < 0)
             {
                 correctPairsSum += pairIndex;
@@ -156,7 +155,7 @@ internal class Day_2022_13 : IDayChallenge
         {
 
         }
-        
+
         public int Compare(IPacketPart? x, IPacketPart? y)
         {
             Debug.Assert(x is not null && y is not null);
@@ -181,17 +180,7 @@ internal class Day_2022_13 : IDayChallenge
                 }
             }
 
-            if (xc.Count < yc.Count)
-            {
-                return -1;
-            }
-
-            if (xc.Count == yc.Count)
-            {
-                return 0;
-            }
-
-            return 1;
+            return xc.Count.CompareTo(yc.Count);
         }
     }
 }
