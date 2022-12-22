@@ -1,5 +1,4 @@
-﻿using System.Reflection.Metadata.Ecma335;
-using CommunityToolkit.HighPerformance;
+﻿using CommunityToolkit.HighPerformance;
 
 namespace AoCRunner;
 
