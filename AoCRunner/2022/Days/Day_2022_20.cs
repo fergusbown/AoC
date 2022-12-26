@@ -28,6 +28,7 @@ internal class Day_2022_20 : IDayChallenge
 
         return Mix(input, 10).ToString();
     }
+
     private static long Mix(long[] initialNumbers, int mixCount)
     {
         var list = new LinkedList<long>(initialNumbers);
