@@ -44,35 +44,29 @@ internal static class InputData
         this string inputData,
         ParseGridDelegate<T> parse,
         int extraBorder = 0,
-        Func<T>? borderValue = null)
+        DefaultValueDelegate<T>? defaultValue = null)
     {
-        if (extraBorder > 0 && borderValue is null)
+        if (extraBorder > 0 && defaultValue is null)
         {
-            throw new ArgumentOutOfRangeException(nameof(borderValue));
+            throw new ArgumentOutOfRangeException(nameof(defaultValue));
         }
 
         var lines = inputData.StringsForDay();
-        var width = lines[0].Length + (extraBorder * 2);
+        var width = lines.Select(l => l.Length).Max() + (extraBorder * 2);
         var height = lines.Length + (extraBorder * 2);
 
         T[] backingArray = new T[width * height];
 
         Span2D<T> grid = new(backingArray, height, width);
 
-        for (int i = 0; i < extraBorder; i++)
+        if (defaultValue is not null)
         {
-            Debug.Assert(borderValue is not null);
-
-            for (int columnIndex = 0; columnIndex < grid.Width; columnIndex++)
+            for (int row = 0; row < grid.Height; row++)
             {
-                grid[i, columnIndex] = borderValue();
-                grid[grid.Height - i - 1, columnIndex] = borderValue();
-            }
-
-            for (int rowIndex = 0; rowIndex < grid.Height; rowIndex++)
-            {
-                grid[rowIndex, i] = borderValue();
-                grid[rowIndex, grid.Width - i - 1] = borderValue();
+                for (int column = 0; column < grid.Width; column++)
+                {
+                    grid[row, column] = defaultValue(row, column);
+                }
             }
         }
 
@@ -94,8 +88,9 @@ internal static class InputData
         this string inputData,
         Func<char, T> parse,
         int extraBorder = 0,
-        Func<T>? borderValue = null)
-        => inputData.GridForDay((c, _, _) => parse(c), extraBorder, borderValue);
+        Func<T>? defaultValue = null)
+        => inputData.GridForDay((c, _, _) => parse(c), extraBorder, defaultValue is null ? null : (_, _) => defaultValue());
 }
 
 public delegate T ParseGridDelegate<T>(char value, int row, int column);
+public delegate T DefaultValueDelegate<T>(int row, int column);
