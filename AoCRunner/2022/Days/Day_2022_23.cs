@@ -7,14 +7,6 @@ internal class Day_2022_23 : IDayChallenge
 {
     private readonly string inputData;
 
-    private const string exampleData = @"....#..
-..###.#
-#...#.#
-.#...##
-#.###..
-##.#.##
-.#..#..";
-
     public Day_2022_23(string inputData)
     {
         this.inputData = inputData;
@@ -23,7 +15,7 @@ internal class Day_2022_23 : IDayChallenge
     public string Part1()
     {
         IReadOnlyCollection<Elf> elves = Parse(inputData);
-        ElfMover elfMover = new ElfMover();
+        ElfMover elfMover = new();
 
         for (int i = 0; i < 10; i++)
         {
@@ -43,7 +35,7 @@ internal class Day_2022_23 : IDayChallenge
     public string Part2()
     {
         IReadOnlyCollection<Elf> elves = Parse(inputData);
-        ElfMover elfMover = new ElfMover();
+        ElfMover elfMover = new();
         int movedCount;
         int roundCount = 0;
 
