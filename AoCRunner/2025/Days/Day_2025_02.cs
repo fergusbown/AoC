@@ -52,7 +52,7 @@ internal class Day_2025_02 : IDayChallenge
         {
             for (long id = start; id <= end; id++)
             {
-                if (IsInvalid(id))
+                if (!IsValid(id))
                 {
                     answer += id;
                 }
@@ -61,7 +61,7 @@ internal class Day_2025_02 : IDayChallenge
 
         return answer.ToString();
 
-        static bool IsInvalid(long id)
+        static bool IsValid(long id)
         {
             var str = id.ToString();
 
@@ -84,11 +84,11 @@ internal class Day_2025_02 : IDayChallenge
 
                 if (!valid)
                 {
-                    return true;
+                    return false;
                 }
             }
 
-            return false;
+            return true;
         }
     }
 
