@@ -148,7 +148,7 @@ internal class Day_2022_15 : IDayChallenge
                 return RangesSet.Empty;
             }
 
-            return new RangesSet(new SimpleRange(from, to + 1));
+            return new RangesSet(new SimpleRange<int>(from, to + 1));
         }
 
         public IImmutableSet<int> PossiblyOccupiedForRow(int rowIndex, int minimum, int maximum)
@@ -165,7 +165,7 @@ internal class Day_2022_15 : IDayChallenge
             int from = Sensor.X - contributionFromRow;
             int to = Sensor.X + contributionFromRow;
 
-            return new RangesSet(new SimpleRange(minimum, from), new SimpleRange(to + 1, maximum + 1));
+            return new RangesSet(new SimpleRange<int>(minimum, from), new SimpleRange<int>(to + 1, maximum + 1));
         }
     }
 }

@@ -5,16 +5,16 @@ namespace AoCRunner
 {
     internal class RangesSet : IImmutableSet<int>
     {
-        private readonly IReadOnlyCollection<SimpleRange> ranges;
+        private readonly IReadOnlyCollection<SimpleRange<int>> ranges;
 
         public static IImmutableSet<int> Empty { get; } = new RangesSet();
 
         public RangesSet(int start, int end)
         {
-            this.ranges = new[] { new SimpleRange(start, end) };
+            this.ranges = new[] { new SimpleRange<int>(start, end) };
         }
 
-        public RangesSet(params SimpleRange[] ranges)
+        public RangesSet(params SimpleRange<int>[] ranges)
         {
             bool haveOverlap = false;
             for (int i = 0; i < ranges.Length; i++)
@@ -41,7 +41,7 @@ namespace AoCRunner
             }
         }
 
-        private RangesSet(IReadOnlyCollection<SimpleRange> ranges)
+        private RangesSet(IReadOnlyCollection<SimpleRange<int>> ranges)
         {
             this.ranges = ranges;
         }
@@ -68,8 +68,8 @@ namespace AoCRunner
                 return this;
             }
 
-            IReadOnlyCollection<SimpleRange> newRanges = this.ranges
-                .Append(new SimpleRange(value, value + 1))
+            IReadOnlyCollection<SimpleRange<int>> newRanges = this.ranges
+                .Append(new SimpleRange<int>(value, value + 1))
                 .ToArray();
 
             return new RangesSet(newRanges);
@@ -82,9 +82,9 @@ namespace AoCRunner
                 return this;
             }
 
-            SimpleRange toRemove = new(value, value + 1);
+            SimpleRange<int> toRemove = new(value, value + 1);
 
-            IReadOnlyCollection<SimpleRange> newRanges = this.ranges
+            IReadOnlyCollection<SimpleRange<int>> newRanges = this.ranges
                 .SelectMany(r => r.Except(toRemove))
                 .ToArray();
 
@@ -110,7 +110,7 @@ namespace AoCRunner
         {
             if (other is RangesSet otherRanges)
             {
-                IReadOnlyCollection<SimpleRange> remaining = this.ranges;
+                IReadOnlyCollection<SimpleRange<int>> remaining = this.ranges;
 
                 foreach (var toRemove in otherRanges.ranges)
                 {
@@ -125,7 +125,7 @@ namespace AoCRunner
 
         public IEnumerator<int> GetEnumerator()
         {
-            foreach (SimpleRange range in this.ranges)
+            foreach (SimpleRange<int> range in this.ranges)
             {
                 for (int i = range.Start; i < range.End; i++)
                 {
@@ -143,7 +143,7 @@ namespace AoCRunner
                     return otherRanges;
                 }
 
-                List<SimpleRange>? intersection = null;
+                List<SimpleRange<int>>? intersection = null;
 
                 foreach (var range in this.ranges)
                 {
@@ -151,7 +151,7 @@ namespace AoCRunner
                     {
                         if (range.TryOverlap(otherRange, out var overlap))
                         {
-                            intersection ??= new List<SimpleRange>(1);
+                            intersection ??= new List<SimpleRange<int>>(1);
                             intersection.Add(overlap);
                         }
                     }
@@ -239,10 +239,10 @@ namespace AoCRunner
 
         IEnumerator IEnumerable.GetEnumerator() => GetEnumerator();
 
-        private static IReadOnlyCollection<SimpleRange> Merge(IEnumerable<SimpleRange> ranges)
+        private static IReadOnlyCollection<SimpleRange<int>> Merge(IEnumerable<SimpleRange<int>> ranges)
         {
-            List<SimpleRange> pending = new(ranges);
-            List<SimpleRange> mergedSet = new(pending.Count);
+            List<SimpleRange<int>> pending = new(ranges);
+            List<SimpleRange<int>> mergedSet = new(pending.Count);
 
             while (pending.Count > 0)
             {
