@@ -1,5 +1,6 @@
 ﻿using CommunityToolkit.HighPerformance;
 using CommunityToolkit.HighPerformance.Enumerables;
+using System.Collections.Immutable;
 using System.Text;
 
 namespace AoCRunner;
@@ -78,6 +79,34 @@ public static class Span2DExtensions
         }
 
         return span;
+    }
+
+    public static ImmutableArray<T> Adjacencies<T>(this Span2D<T> span, int row, int column)
+    {
+        ImmutableArray<T>.Builder builder = ImmutableArray.CreateBuilder<T>();
+
+        for (int testRow = row - 1; testRow <= row + 1; testRow++)
+        {
+            if (testRow < 0 || testRow >= span.Height)
+            {
+                continue;
+            }
+
+            for (int testColumn = column - 1; testColumn <= column + 1; testColumn++)
+            {
+                if (testRow == row && testColumn == column)
+                {
+                    continue;
+                }
+
+                if (testColumn >= 0 && testColumn < span.Width)
+                {
+                    builder.Add(span[testRow, testColumn]);
+                }
+            }
+        }
+
+        return builder.ToImmutable();
     }
 
     public static void AddToStringBuilder<T, TOut>(this Span2D<T> span, StringBuilder sb, Func<T, TOut> converter)
